@@ -1,0 +1,6 @@
+/__pycache__
+/app/__pycache__
+/logs
+/migrations
+/venv
+/app.db
