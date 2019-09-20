@@ -1,8 +1,8 @@
-# from flask_wtf import FlaskForm
-# from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
-#     TextAreaField
-# from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
-#     Length
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
+    TextAreaField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
+    Length
 # from app.models import User
 
 
@@ -48,6 +48,6 @@
 #                 raise ValidationError('Please use a different username.')
 
 
-# class PostForm(FlaskForm):
-#     post = TextAreaField('Say something', validators=[DataRequired()])
-#     submit = SubmitField('Submit')
+class PostForm(FlaskForm):
+    post = TextAreaField('Say something', validators=[DataRequired()])
+    submit = SubmitField('Submit')
