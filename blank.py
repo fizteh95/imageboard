@@ -86,6 +86,49 @@ def board_b():
 
 
 
+<html>
+    <head>
+    </head>
+
+    <body>
+        <div>
+            {{posts[0].body}}
+        </div>
+        <br>
+        {% for post in posts.order_by(Post.timestamp.desc()) %}
+        <div> 
+            {{post.body}}
+        </div>
+        {% end for %}
+    </body>
+</html>
+
+
+
+<html>
+    <head>
+    </head>
+
+    <body>
+    {% for thread in threads %}
+        <div>
+            {{thread.posts[0].body}}
+        </div>
+        <br>
+        {% for post in thread.posts.order_by(Post.timestamp.desc()) %}
+        <div> 
+            {{post.body}}
+        </div>
+        <br>
+        {% end for %}
+        <br>
+    {% endfor %}
+    </body>
+</html>
+
+
+
+
     
 if __name__ == '__main__':
     app.run(debug=True)
