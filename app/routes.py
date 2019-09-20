@@ -156,8 +156,31 @@
 
 from flask import render_template
 from app import app
+from app.models import Thread, Post
 
 
 @app.route('/<name>')
 def hello(name):
     return render_template('template_file.html', var=name)
+
+
+@app.route('/thread/<thread_num>')
+def thread_big(thread_num):
+    thread = Thread.query.filter_by(id=thread_num).first_or_404()
+    posts = thread.posts.order_by(Post.timestamp.desc())  # .paginate(page, app.config['POSTS_PER_PAGE'], False)
+    if str(thread_num) in session: #session exists and has key
+        op = session[str(thread_num)]
+    return render_template('thread_big.html', posts=posts, op=op)
+
+
+@app.route('/b')
+def board_b():
+# тут нужно к каждому треду передавать 4 последних поста. хотя они и так передаются, их нужно грамотно вытащить в темплейте
+   # короче тут надо отсортировать по времени последнего поста
+    threads = Thread.query.filter_by(board='b').order_by(Thread.posts.order_by(Post.timestamp.desc())[-1].timestamp.desc()).paginate(
+        page, app.config['POSTS_PER_PAGE'], False)
+    next_url = url_for('board', board='b', page=threads.next_num) \
+        if threads.has_next else None
+    prev_url = url_for('board', board='b', page=threads.prev_num) \
+        if threads.has_prev else None
+    return render_template('board.html', threads=threads.items, next_url=next_url, prev_url=prev_url)
