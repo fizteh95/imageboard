@@ -157,6 +157,7 @@
 from flask import render_template
 from app import app
 from app.models import Thread, Post
+from app.forms import PostForm
 
 
 @app.route('/<name>')
@@ -166,6 +167,7 @@ def hello(name):
 
 @app.route('/thread/<thread_num>')
 def thread_big(thread_num):
+    form = PostForm()
     thread = Thread.query.filter_by(id=thread_num).first_or_404()
     posts = thread.posts.order_by(Post.timestamp.desc())  # .paginate(page, app.config['POSTS_PER_PAGE'], False)
     if str(thread_num) in session: #session exists and has key
