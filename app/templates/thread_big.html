@@ -7,7 +7,12 @@
     {% for post in posts %}
     {{post.id}}
     {{post.timestamp}}
-    <p>{{post.body}}</p>
+        <p>
+        {% if post.image_ref %}
+        <img src="/static/image_posts/{{post.image_ref}}">
+        {% endif %}
+        {{post.body}}
+        </p>
     <br>
     {% endfor %}
 

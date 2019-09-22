@@ -171,18 +171,21 @@ def index():
 def thread_big(thread_num, board):
     form = PostForm()
     if form.validate_on_submit():
+        p = Post(body=form.post.data, OP_flag=0, OP_num=thread_num, board_name=board)
+        db.session.add(p)
+        db.session.commit()
+
         file = request.files['image']
         # if file and allowed_file(file.filename):
         #     filename = secure_filename(file.filename)
         #     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        app.logger.info(f'including file {file.filename}')
+        # TODO сделать проверки на тип и название и размер
         if file:
-            filename = file.filename
-            file.save(os.path.join("C:\\2ch\\imageboard\\static", filename))
+            filename = str(str(p.id) + '.' + file.filename.split('.')[-1])
+            p.image_ref = filename
+            db.session.commit()
+            file.save(os.path.join("C:\\2ch\\imageboard\\app\\static\\image_posts", filename))
 
-        p = Post(body=form.post.data, OP_flag=0, OP_num=thread_num, board_name=board)
-        db.session.add(p)
-        db.session.commit()
         return redirect(url_for('thread_big', board=board, thread_num=thread_num))
     thread = Post.query.filter_by(
         OP_num=thread_num).order_by(Post.timestamp)
