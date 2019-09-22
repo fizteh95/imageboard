@@ -158,6 +158,7 @@ from flask import render_template
 from app import app, db
 from app.models import Board, Post
 from app.forms import PostForm, ThreadForm
+import os
 
 
 @app.route('/')
@@ -170,6 +171,15 @@ def index():
 def thread_big(thread_num, board):
     form = PostForm()
     if form.validate_on_submit():
+        file = request.files['image']
+        # if file and allowed_file(file.filename):
+        #     filename = secure_filename(file.filename)
+        #     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        app.logger.info(f'including file {file.filename}')
+        if file:
+            filename = file.filename
+            file.save(os.path.join("C:\\2ch\\imageboard\\static", filename))
+
         p = Post(body=form.post.data, OP_flag=0, OP_num=thread_num, board_name=board)
         db.session.add(p)
         db.session.commit()

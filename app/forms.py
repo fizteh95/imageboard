@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
-    TextAreaField
+    TextAreaField, FileField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
     Length
 # from app.models import User
@@ -50,6 +50,7 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
 
 class PostForm(FlaskForm):
     post = TextAreaField('Say something', validators=[DataRequired()])
+    image = FileField('Put your image here')
     submit = SubmitField('Submit')
 
 

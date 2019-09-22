@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+    <h2><a href="{{ url_for('board_b', board=board) }}">/{{board}}</a></h2>
+    <br>
+    <br>
     {% for post in posts %}
     {{post.id}}
     {{post.timestamp}}
@@ -9,8 +11,12 @@
     <br>
     {% endfor %}
 
-     <form action="" method="post">
+     <form action="" enctype="multipart/form-data" method="post">
         {{ form.hidden_tag() }}
+        <p>
+            {{ form.image.label }}<br>
+            {{ form.image(size=16) }}<br>
+        </p>
         <p>
             {{ form.post.label }}<br>
             {{ form.post(cols=32, rows=4) }}<br>
@@ -20,5 +26,5 @@
         </p>
         <p>{{ form.submit() }}</p>
     </form>
-    
+
 {% endblock %}
