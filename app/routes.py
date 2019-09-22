@@ -167,11 +167,11 @@ def index():
 
 
 @app.route('/<board>/res/<thread_num>')
-def thread_big(thread_num):
+def thread_big(thread_num, board):
     # добавить форму
     thread = Post.query.filter_by(
-        OP_num=thread_num).order_by(Post.timestamp.desc())
-    return render_template('thread_big.html', posts=thread)
+        OP_num=thread_num).order_by(Post.timestamp)
+    return render_template('thread_big.html', posts=thread, board=board)
 
 
 @app.route('/<board>')

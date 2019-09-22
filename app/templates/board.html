@@ -6,6 +6,9 @@
         {% for post in posts %}
         {{post.id}}
         {{post.timestamp}}
+        {% if post.OP_flag == 1 %}
+        <a href="{{ url_for('thread_big', board=post.board_name, thread_num=post.id) }}"> reply</a>
+        {% endif %}
         <p>{{post.body}}</p>
         <br>
         {% endfor %}

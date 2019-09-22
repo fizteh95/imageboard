@@ -4,9 +4,10 @@
 
     <body>
         {% for post in posts %}
-        <div> 
-            {{post.body}}
-        </div>
+        {{post.id}}
+        {{post.timestamp}}
+        <p>{{post.body}}</p>
+        <br>
         {% endfor %}
     </body>
 </html>
