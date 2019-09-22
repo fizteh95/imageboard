@@ -186,6 +186,9 @@ def board_b(board):
         p = Post(body=form.post.data, OP_flag=1, board_name=board)
         db.session.add(p)
         db.session.commit()
+        # надо записывать айди оп поста в сам оп пост
+        p.OP_num = p.id
+        db.session.commit()
         return redirect(url_for('thread_big', board=board, thread_num=p.id))
     # thread = Post.query.filter_by(OP_num=p.id).order_by(Post.timestamp)
     posts = Post.query.filter_by(board_name=board).order_by(Post.timestamp)
