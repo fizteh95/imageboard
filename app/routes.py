@@ -155,7 +155,7 @@ from flask import render_template, flash, redirect, url_for, request
 
 
 from flask import render_template
-from app import app
+from app import app, db
 from app.models import Board, Post
 from app.forms import PostForm
 
@@ -166,12 +166,17 @@ def index():
     return render_template('index.html', boards=boards)
 
 
-@app.route('/<board>/res/<thread_num>')
+@app.route('/<board>/res/<thread_num>', methods=['GET', 'POST'])
 def thread_big(thread_num, board):
-    # добавить форму
+    form = PostForm()
+    if form.validate_on_submit():
+        p = Post(body=form.post.data, OP_flag=0, OP_num=thread_num, board_name=board)
+        db.session.add(p)
+        db.session.commit()
+        return redirect(url_for('thread_big', board=board, thread_num=thread_num))
     thread = Post.query.filter_by(
         OP_num=thread_num).order_by(Post.timestamp)
-    return render_template('thread_big.html', posts=thread, board=board)
+    return render_template('thread_big.html', posts=thread, board=board, form=form)
 
 
 @app.route('/<board>')
