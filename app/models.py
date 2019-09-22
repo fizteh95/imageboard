@@ -77,26 +77,24 @@ from app import db  # , login
 
 
 
-class Thread(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    OP_num = db.Column(db.Integer, index=True, unique=True)
-    name = db.Column(db.String(120))
-    OP_user = db.Column(db.String(128))
-    posts = db.relationship('Post', backref='thread', lazy='dynamic')
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    board = db.Column(db.String(10), unique=True)
-
-    def __repr__(self):
-        return '<Thread {}>'.format(self.name)
-
-
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    OP_num = db.Column(db.Integer, index=True)
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     OP_flag = db.Column(db.Integer)
     image_ref = db.Column(db.String(120))
-    thread_id = db.Column(db.Integer, db.ForeignKey('thread.id'))
+    board_name = db.Column(db.String(10), db.ForeignKey('board.ref'))
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
+
+
+class Board(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    ref = db.Column(db.String(100), unique=True)
+    post_rel = db.relationship('Post', backref='board', lazy='dynamic')
+    description = db.Column(db.String(100))
+
+    def __repr__(self):
+        return '<Board {}>'.format(self.ref)

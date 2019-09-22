@@ -3,18 +3,11 @@
     </head>
 
     <body>
-    {% for thread in threads %}
-        <div>
-            {{thread.posts[0].body}}
-        </div>
+        {% for post in posts %}
+        {{post.id}}
+        {{post.timestamp}}
+        <p>{{post.body}}</p>
         <br>
-        {% for post in thread.posts.order_by(Post.timestamp.desc()) %}
-        <div> 
-            {{post.body}}
-        </div>
-        <br>
-        {% end for %}
-        <br>
-    {% endfor %}
+        {% endfor %}
     </body>
 </html>

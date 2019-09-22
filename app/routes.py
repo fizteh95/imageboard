@@ -1,5 +1,5 @@
 # from datetime import datetime
-# from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request
 # from flask_login import login_user, logout_user, current_user, login_required
 # from werkzeug.urls import url_parse
 # from app import app, db
@@ -156,33 +156,25 @@
 
 from flask import render_template
 from app import app
-from app.models import Thread, Post
+from app.models import Board, Post
 from app.forms import PostForm
 
 
-@app.route('/<name>')
-def hello(name):
-    return render_template('template_file.html', var=name)
+@app.route('/')
+def index():
+    boards = Board.query.all()
+    return render_template('index.html', boards=boards)
 
 
-@app.route('/thread/<thread_num>')
+@app.route('/<board>/res/<thread_num>')
 def thread_big(thread_num):
-    form = PostForm()
-    thread = Thread.query.filter_by(id=thread_num).first_or_404()
-    posts = thread.posts.order_by(Post.timestamp.desc())  # .paginate(page, app.config['POSTS_PER_PAGE'], False)
-    if str(thread_num) in session: #session exists and has key
-        op = session[str(thread_num)]
-    return render_template('thread_big.html', posts=posts, op=op)
+    # добавить форму
+    thread = Post.query.filter_by(
+        OP_num=thread_num).order_by(Post.timestamp.desc())
+    return render_template('thread_big.html', posts=thread)
 
 
-@app.route('/b')
-def board_b():
-# тут нужно к каждому треду передавать 4 последних поста. хотя они и так передаются, их нужно грамотно вытащить в темплейте
-   # короче тут надо отсортировать по времени последнего поста
-    threads = Thread.query.filter_by(board='b').order_by(Thread.posts.order_by(Post.timestamp.desc())[-1].timestamp.desc()).paginate(
-        page, app.config['POSTS_PER_PAGE'], False)
-    next_url = url_for('board', board='b', page=threads.next_num) \
-        if threads.has_next else None
-    prev_url = url_for('board', board='b', page=threads.prev_num) \
-        if threads.has_prev else None
-    return render_template('board.html', threads=threads.items, next_url=next_url, prev_url=prev_url)
+@app.route('/<board>')
+def board_b(board):
+    posts = Post.query.filter_by(board_name=board).order_by(Post.timestamp)
+    return render_template('board.html', posts=posts)
