@@ -157,7 +157,7 @@ from flask import render_template, flash, redirect, url_for, request
 from flask import render_template
 from app import app, db
 from app.models import Board, Post
-from app.forms import PostForm
+from app.forms import PostForm, ThreadForm
 
 
 @app.route('/')
@@ -179,7 +179,14 @@ def thread_big(thread_num, board):
     return render_template('thread_big.html', posts=thread, board=board, form=form)
 
 
-@app.route('/<board>')
+@app.route('/<board>', methods=['GET', 'POST'])
 def board_b(board):
+    form = ThreadForm()
+    if form.validate_on_submit():
+        p = Post(body=form.post.data, OP_flag=1, board_name=board)
+        db.session.add(p)
+        db.session.commit()
+        return redirect(url_for('thread_big', board=board, thread_num=p.id))
+    # thread = Post.query.filter_by(OP_num=p.id).order_by(Post.timestamp)
     posts = Post.query.filter_by(board_name=board).order_by(Post.timestamp)
-    return render_template('board.html', posts=posts)
+    return render_template('board.html', posts=posts, form=form)

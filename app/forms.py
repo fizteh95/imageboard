@@ -51,3 +51,8 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
 class PostForm(FlaskForm):
     post = TextAreaField('Say something', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+
+class ThreadForm(FlaskForm):
+    post = TextAreaField('Say something', validators=[DataRequired()])
+    submit = SubmitField('Submit')

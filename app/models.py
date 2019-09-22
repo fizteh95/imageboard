@@ -76,7 +76,6 @@ from app import db  # , login
 #         return '<Post {}>'.format(self.body)
 
 
-
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     OP_num = db.Column(db.Integer, index=True)
