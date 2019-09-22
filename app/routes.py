@@ -179,6 +179,9 @@ def thread_big(thread_num, board):
     return render_template('thread_big.html', posts=thread, board=board, form=form)
 
 
+def sort_of_threads(list_of_threads):
+    return list_of_threads[-1].timestamp
+
 @app.route('/<board>', methods=['GET', 'POST'])
 def board_b(board):
     form = ThreadForm()
@@ -191,5 +194,12 @@ def board_b(board):
         db.session.commit()
         return redirect(url_for('thread_big', board=board, thread_num=p.id))
     # thread = Post.query.filter_by(OP_num=p.id).order_by(Post.timestamp)
-    posts = Post.query.filter_by(board_name=board).order_by(Post.timestamp)
-    return render_template('board.html', posts=posts, form=form)
+    OP_posts = Post.query.filter_by(board_name=board, OP_flag=1).order_by(Post.timestamp)
+    new_posts = []
+    for OP in OP_posts:
+        new_posts.append([OP] + Post.query.filter_by(OP_num=OP.OP_num, OP_flag=0).order_by(Post.timestamp)[-3:])
+    new_posts.sort(key=sort_of_threads, reverse=True)
+    # разворачивание списка
+    listmerge = (lambda x: [el for lst in x for el in lst])(new_posts)
+
+    return render_template('board.html', posts=listmerge, form=form)
