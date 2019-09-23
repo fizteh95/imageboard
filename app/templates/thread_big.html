@@ -1,6 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <script>
+        function ChangeURLPicture()
+        {
+            abz = document.getElementById("tratata");
+            if ( abz.border == "1px")
+            {abz.border = "5px";}
+            else {abz.border = "1px";}
+
+        }
+    </script>
+
+<img id="id" onclick="ChangeURLPicture()">
+
     <h2><a href="{{ url_for('board_b', board=board) }}">/{{board}}</a></h2>
     <br>
     <br>
@@ -9,7 +22,7 @@
     {{post.timestamp}}
         <p>
         {% if post.image_ref %}
-        <a href="/static/image_posts/{{post.image_ref}}"><img src="/static/image_posts/thumb/{{post.image_ref}}"></a>
+        <img src="/static/image_posts/thumb/{{post.image_ref}}" id="tratata" onclick="ChangeURLPicture()" border="1px">
         {% endif %}
         {{post.body}}
         </p>

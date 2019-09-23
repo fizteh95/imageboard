@@ -159,7 +159,7 @@ from app import app, db
 from app.models import Board, Post
 from app.forms import PostForm, ThreadForm
 import os
-‍‍from PIL import Image
+from PIL import Image
 
 
 @app.route('/')
@@ -182,15 +182,15 @@ def thread_big(thread_num, board):
         #     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         # TODO сделать проверки на тип и название и размер
         if file:
+            filename = str(str(p.id) + '.' + file.filename.split('.')[-1])
+            file.save(os.path.join("C:\\2ch\\imageboard\\app\\static\\image_posts", filename))
             image = Image.open(file)
             image.thumbnail((120, 120), Image.ANTIALIAS)
             image.save(os.path.join("C:\\2ch\\imageboard\\app\\static\\image_posts\\thumb", filename))  # , 'JPEG'
 
-
-            filename = str(str(p.id) + '.' + file.filename.split('.')[-1])
             p.image_ref = filename
             db.session.commit()
-            file.save(os.path.join("C:\\2ch\\imageboard\\app\\static\\image_posts", filename))
+            
 
         return redirect(url_for('thread_big', board=board, thread_num=thread_num))
     thread = Post.query.filter_by(
