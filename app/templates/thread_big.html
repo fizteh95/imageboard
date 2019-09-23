@@ -9,7 +9,7 @@
     {{post.timestamp}}
         <p>
         {% if post.image_ref %}
-        <img src="/static/image_posts/{{post.image_ref}}">
+        <a href="/static/image_posts/{{post.image_ref}}"><img src="/static/image_posts/thumb/{{post.image_ref}}"></a>
         {% endif %}
         {{post.body}}
         </p>
