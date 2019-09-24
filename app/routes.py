@@ -191,20 +191,21 @@ def thread_big(thread_num, board):
 
             p.image_ref = filename
             db.session.commit()
-         
 
-            reply = re.findall(r'>>\d+\s')
-            for i in range(len(reply)):
-                num = reply[i].split('>>')[-1]
-                post_to_reply = Post.query.filter_by(id=num)
-                if post_to_reply:
-                    post_to_reply.answers += str(', ' + str(num))
+        reply = re.findall(r'>>\d+\s', p.body)
+        app.logger.info(f'reply: {reply}')
+        for i in range(len(reply)):
+            num = reply[i].split('>>')[-1]
+            app.logger.info(f'num: {num}')
+            post_to_reply = Post.query.filter_by(id=num).first()
+            if post_to_reply:
+                if post_to_reply.answers:
+                    post_to_reply.answers += str(', ' + str(p.id))
                 else:
-                    post_to_reply.answers = str(num)
+                    post_to_reply.answers = str(p.id)
                 db.session.commit()
-   
 
-        return redirect(url_for('thread_big', board=board, thread_num=thread_num))
+        return redirect(url_for('thread_big', board=board, thread_num=thread_num, _anchor=("post_num_" + str(p.id))))
     thread = Post.query.filter_by(
         OP_num=thread_num).order_by(Post.timestamp)
     return render_template('thread_big.html', posts=thread, board=board, form=form)

@@ -12,24 +12,30 @@
         }
     </script>
 
-<img id="id" onclick="ChangeURLPicture()">
+    <style>
+       .post {
+        border: 4px double black; /* Параметры границы */
+        background: #fc3; /* Цвет фона */
+        padding: 10px; /* Поля вокруг текста */
+       }
+    </style>
 
     <h2><a href="{{ url_for('board_b', board=board) }}">/{{board}}</a></h2>
     <br>
     <br>
     {% for post in posts %}
-    <div border="1px">
+    <div class="post" id="post_num_{{post.id}}">
     {{post.id}}
     {{post.timestamp}}
         <p>
         {% if post.image_ref %}
-        <img src="/static/image_posts/thumb/{{post.image_ref}}" id="tratata" onclick="ChangeURLPicture(event, this)">
+        <img src="/static/image_posts/thumb/{{post.image_ref}}" onclick="ChangeURLPicture(event, this)">
         {% endif %}
         {{post.body}}
         </p>
         {% if post.answers %}
         <p>
-        post.answers
+        <i>{{ post.answers }}</i>
         </p>
         {% endif %}
     </div>
