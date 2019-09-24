@@ -160,6 +160,7 @@ from app.models import Board, Post
 from app.forms import PostForm, ThreadForm
 import os
 from PIL import Image
+import re
 
 
 @app.route('/')
@@ -190,7 +191,18 @@ def thread_big(thread_num, board):
 
             p.image_ref = filename
             db.session.commit()
-            
+         
+
+            reply = re.match(r'>>[0-9]')
+            for i in range(len(reply)):
+                num = reply[i].split('>>')[-1]
+                post_to_reply = Post.query.filter_by(id=num)
+                if post_to_reply:
+                    post_to_reply.answers += str(', ' + str(num))
+                else:
+                    post_to_reply.answers = str(num)
+                db.session.commit()
+   
 
         return redirect(url_for('thread_big', board=board, thread_num=thread_num))
     thread = Post.query.filter_by(
