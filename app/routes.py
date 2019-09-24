@@ -193,7 +193,7 @@ def thread_big(thread_num, board):
             db.session.commit()
          
 
-            reply = re.match(r'>>\d+\s')
+            reply = re.findall(r'>>\d+\s')
             for i in range(len(reply)):
                 num = reply[i].split('>>')[-1]
                 post_to_reply = Post.query.filter_by(id=num)
