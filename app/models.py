@@ -84,6 +84,7 @@ class Post(db.Model):
     OP_flag = db.Column(db.Integer)
     image_ref = db.Column(db.String(120))
     board_name = db.Column(db.String(10), db.ForeignKey('board.ref'))
+    answers = db.Column(db.String(100))
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
