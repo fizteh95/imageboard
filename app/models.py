@@ -98,3 +98,15 @@ class Board(db.Model):
 
     def __repr__(self):
         return '<Board {}>'.format(self.ref)
+
+
+# class Answers(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     answer_from = db.Column(db.Integer, index=True)
+#     answer_to = db.Column(db.Integer, index=True)
+#     ###
+#     post_rel = db.relationship('Post', backref='rep_from', lazy='dynamic')
+#     post_rel = db.relationship('Post', backref='rep_to', lazy='dynamic')
+
+#     def __repr__(self):
+#         return '<Board {}>'.format(self.ref)

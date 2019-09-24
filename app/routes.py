@@ -193,16 +193,15 @@ def thread_big(thread_num, board):
             db.session.commit()
 
         reply = re.findall(r'>>\d+\s', p.body)
-        app.logger.info(f'reply: {reply}')
         for i in range(len(reply)):
             num = reply[i].split('>>')[-1]
-            app.logger.info(f'num: {num}')
             post_to_reply = Post.query.filter_by(id=num).first()
             if post_to_reply:
                 if post_to_reply.answers:
-                    post_to_reply.answers += str(', ' + str(p.id))
+                    post_to_reply.answers += str(', ' + r'<a id="' + 'post_num_' + str(p.id) + r'>' + str(p.id) + r'</a>')
+                    app.logger.info(str(', ' + '<a id="' + 'post_num_' + str(p.id) + '>' + str(p.id) + '</a>'))
                 else:
-                    post_to_reply.answers = str(p.id)
+                    post_to_reply.answers = str(r'<a id="' + 'post_num_' + str(p.id) + r'>' + str(p.id) + r'</a>')
                 db.session.commit()
 
         return redirect(url_for('thread_big', board=board, thread_num=thread_num, _anchor=("post_num_" + str(p.id))))
