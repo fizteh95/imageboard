@@ -36,8 +36,8 @@
             {% if post.answ_from_id.all().count() > 1 %}
             <p>
             <i>
-                {% for reply in post.answ_from_id.all() %}
-                {{ reply.id }}
+                {% for i, reply in zip(range(post.answ_from_id.all().count()), post.answ_from_id.all()) %}
+                <a href="#post_num_{{ reply.id }}">{{ reply.id }}</a>{% if i == 0 %}, {% endif %}
                 {% endfor %}
             </i>
             </p>
@@ -46,7 +46,7 @@
             {% if post.answ_from_id.all().count() == 1 %}
             <p>
             <i>
-                {{ post.answ_from_id.first().id }}
+                <a href="#post_num_{{post.answ_from_id.first().id}}">{{ post.answ_from_id.first().id }}</a>
             </i>
             </p>
             {% endif %}
