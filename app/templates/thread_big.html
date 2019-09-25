@@ -10,6 +10,27 @@
             {abz.src = "/static/image_posts/" + temp.split("/")[temp.split("/").length - 1];}
             else {abz.src = "/static/image_posts/thumb/" + temp.split("/")[temp.split("/").length - 1];}
         }
+        function ShowReply(event, element)
+        {
+            // тут ещё айдишник надо менять
+            //var p = document.getElementById("para1");
+            //var p_prime = p.cloneNode(true);
+            var div = document.createElement('div');
+
+            div.style.position = 'absolute';
+            div.style.left = event.clientX;   // Координаты дива X и Y не забываем указать единицы измерения,
+            div.style.top = event.clientY;    // например 40px или 20%
+            div.style.background = 'red';   //  Див с красной заливкой ))
+            div.appendChild(document.createTextNode('Я обычный текст'));  //  Добавим текст в див
+
+            document.body.appendChild(div);   //  Добавим наш див на страницу
+        }
+        function deleteDiv (event, element) 
+        {
+            document.body.removeChild(div);   // Удаление дива
+            //  Удаляем обработчик события "уход курсора с элемента" текущей ссылки
+            e.target.removeEventListener('mouseout', deleteDiv, false);
+        }
     </script>
 
     <style>
@@ -58,7 +79,7 @@
             <p>
             <i>
                 {% for i, reply in zip(range(post.answ_from_id.all().count()), post.answ_from_id.all()) %}
-                <a href="#post_num_{{ reply.id }}">{{ reply.id }}</a>{% if i == 0 %}, {% endif %}
+                <a href="#post_num_{{ reply.id }}" onmouseenter="ShowReply(event, this)" onmouseleave="deleteDiv(event, this)">{{ reply.id }}</a>{% if i == 0 %}, {% endif %}
                 {% endfor %}
             </i>
             </p>
@@ -67,7 +88,7 @@
         {% if post.answ_from_id.all().count() == 1 %}
             <p>
             <i>
-                <a href="#post_num_{{post.answ_from_id.first().id}}">{{ post.answ_from_id.first().id }}</a>
+                <a href="#post_num_{{post.answ_from_id.first().id}}" onmouseenter="ShowReply(event, this)" onmouseleave="deleteDiv(event, this)">{{ post.answ_from_id.first().id }}</a>
             </i>
             </p>
         {% endif %}
