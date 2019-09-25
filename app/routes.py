@@ -197,12 +197,16 @@ def thread_big(thread_num, board):
             num = reply[i].split('>>')[-1]
             post_to_reply = Post.query.filter_by(id=num).first()
             if post_to_reply:
-                if post_to_reply.answers:
-                    post_to_reply.answers += str(', ' + r'<a id="' + 'post_num_' + str(p.id) + r'>' + str(p.id) + r'</a>')
-                    app.logger.info(str(', ' + '<a id="' + 'post_num_' + str(p.id) + '>' + str(p.id) + '</a>'))
-                else:
-                    post_to_reply.answers = str(r'<a id="' + 'post_num_' + str(p.id) + r'>' + str(p.id) + r'</a>')
-                db.session.commit()
+#                 if post_to_reply.answers:
+#                     post_to_reply.answers += str(', ' + r'<a id="' + 'post_num_' + str(p.id) + r'>' + str(p.id) + r'</a>')
+#                     app.logger.info(str(', ' + '<a id="' + 'post_num_' + str(p.id) + '>' + str(p.id) + '</a>'))
+#                 else:
+#                     post_to_reply.answers = str(r'<a id="' + 'post_num_' + str(p.id) + r'>' + str(p.id) + r'</a>')
+#                 db.session.commit()
+                if p.answ_to_id.filter(answers.c.answ_to_id == post_to_reply.id).count() == 0
+                    post_to_reply.answ_to_id.append(p)
+                    db.session.commit()
+
 
         return redirect(url_for('thread_big', board=board, thread_num=thread_num, _anchor=("post_num_" + str(p.id))))
     thread = Post.query.filter_by(
