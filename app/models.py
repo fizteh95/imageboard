@@ -76,6 +76,11 @@ from app import db  # , login
 #         return '<Post {}>'.format(self.body)
 
 
+answers = db.Table('answers',
+                     db.Column('answ_from_id', db.Integer, db.ForeignKey('post.id')),
+                     db.Column('answ_to_id', db.Integer, db.ForeignKey('post.id')) )
+
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     OP_num = db.Column(db.Integer, index=True)
@@ -84,12 +89,25 @@ class Post(db.Model):
     OP_flag = db.Column(db.Integer)
     image_ref = db.Column(db.String(120))
     board_name = db.Column(db.String(10), db.ForeignKey('board.ref'))
-    answers = db.Column(db.String(100))
-
+    # answers = db.Column(db.String(100))
+    reply = db.relationship(
+        'Post', secondary=answers,
+        primaryjoin=(answers.c.answ_from_id == id),
+        secondaryjoin=(answers.c.answ_to_id == id),
+        backref=db.backref('answers', lazy='dynamic'), lazy='dynamic')
+    
     def __repr__(self):
         return '<Post {}>'.format(self.body)
-
-
+    # post.answ_from_id.all()
+    # post1.answ_from_id.append(user2)
+    # post1.answ_from_id.remove(user2)
+    # пример сложного запроса на объединение
+#     def followed_posts(self):
+#         return Post.query.join(
+#             followers, (followers.c.followed_id == Post.user_id)).filter(
+#                 followers.c.follower_id == self.id).order_by(
+#                     Post.timestamp.desc())
+    
 class Board(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ref = db.Column(db.String(100), unique=True)
