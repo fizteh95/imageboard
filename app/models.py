@@ -1,6 +1,7 @@
 from datetime import datetime
 # from hashlib import md5
 from app import db  # , login
+import json
 # from flask_login import UserMixin
 # from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -76,9 +77,9 @@ from app import db  # , login
 #         return '<Post {}>'.format(self.body)
 
 
-answers = db.Table('answers',
-                     db.Column('answ_from_id', db.Integer, db.ForeignKey('post.id')),
-                     db.Column('answ_to_id', db.Integer, db.ForeignKey('post.id')) )
+# answers = db.Table('answers',
+#                      db.Column('answ_from_id', db.Integer, db.ForeignKey('post.id')),
+#                      db.Column('answ_to_id', db.Integer, db.ForeignKey('post.id')) )
 
 
 class Post(db.Model):
@@ -94,19 +95,28 @@ class Post(db.Model):
     #_ratings = Column(db.String, default='0.0')
     @property
     def _answers(self):
-        return json.loads(self.answers)
-    @ratings.setter
+        return [0, 1]
+        # if type(self.answers) == str:
+        #     return json.loads(self.answers)
+        # else:
+        #     return [0, 1]
+    @_answers.setter
     def _answers(self, value):
         self.answers = json.dumps(value)
     
-    reply = db.relationship(
-        'Post', secondary=answers,
-        primaryjoin=(answers.c.answ_from_id == id),
-        secondaryjoin=(answers.c.answ_to_id == id),
-        backref=db.backref('answers', lazy='dynamic'), lazy='dynamic')
+    # reply = db.relationship(
+    #     'Post', secondary=answers,
+    #     primaryjoin=(answers.c.answ_from_id == id),
+    #     secondaryjoin=(answers.c.answ_to_id == id),
+    #     backref=db.backref('answers', lazy='dynamic'), lazy='dynamic')
     
     def __repr__(self):
         return '<Post {}>'.format(self.body)
+
+
+
+
+
     # post.answ_from_id.all()
     # post1.answ_from_id.append(user2)
     # post1.answ_from_id.remove(user2)

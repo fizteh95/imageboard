@@ -197,11 +197,11 @@ def thread_big(thread_num, board):
             num = reply[i].split('>>')[-1]
             post_to_reply = Post.query.filter_by(id=num).first()
             if post_to_reply:
-#                 post_to_reply._answers = post_to_reply._answers.append(num)
-#                 db.session.commit()
-                if p.answ_to_id.filter(answers.c.answ_to_id == post_to_reply.id).count() == 0
-                    post_to_reply.answ_to_id.append(p)
-                    db.session.commit()
+                post_to_reply._answers = post_to_reply._answers.append(num)
+                db.session.commit()
+                # if p.answ_to_id.filter(answers.c.answ_to_id == post_to_reply.id).count() == 0
+                #     post_to_reply.answ_to_id.append(p)
+                #     db.session.commit()
 
 
         return redirect(url_for('thread_big', board=board, thread_num=thread_num, _anchor=("post_num_" + str(p.id))))

@@ -54,19 +54,20 @@
             {% endif %}
             {{post.body}}
         </p>
-        <!-- 
         
-        {% if len(post._answers) > 1 %}
+
+        
+        {% if (post._answers|count) > 1 %}
             <p>
             <i>
-                {% for i in range(len(post._answers)) %}
+                {% for i in range((post._answers)|length) %}
                     <a href="#post_num_{{ post._answers[i] }}">{{ post._answers[i] }}</a>{% if i == 0 %}, {% endif %}
                 {% endfor %}
             </i>
             </p>
         {% endif %}
 
-        {% if len(post._answers) == 1 %}
+        {% if (post._answers|length) == 1 %}
             <p>
             <i>
                 <a href="#post_num_{{ post._answers[0] }}">{{ post._answers[0] }}</a>
@@ -74,24 +75,8 @@
             </p>
         {% endif %}
         
-        -->
-        {% if post.answ_from_id.all().count() > 1 %}
-            <p>
-            <i>
-                {% for i, reply in zip(range(post.answ_from_id.all().count()), post.answ_from_id.all()) %}
-                <a href="#post_num_{{ reply.id }}" onmouseenter="ShowReply(event, this)" onmouseleave="deleteDiv(event, this)">{{ reply.id }}</a>{% if i == 0 %}, {% endif %}
-                {% endfor %}
-            </i>
-            </p>
-        {% endif %}
-
-        {% if post.answ_from_id.all().count() == 1 %}
-            <p>
-            <i>
-                <a href="#post_num_{{post.answ_from_id.first().id}}" onmouseenter="ShowReply(event, this)" onmouseleave="deleteDiv(event, this)">{{ post.answ_from_id.first().id }}</a>
-            </i>
-            </p>
-        {% endif %}
+        
+        
             
         </div>
         <br>
