@@ -95,11 +95,11 @@ class Post(db.Model):
     #_ratings = Column(db.String, default='0.0')
     @property
     def _answers(self):
-        return [0, 1]
-        # if type(self.answers) == str:
-        #     return json.loads(self.answers)
-        # else:
-        #     return [0, 1]
+        if self.answers:
+            if type(json.loads(self.answers)) == list:
+              return json.loads(self.answers)
+        else:
+            return []
     @_answers.setter
     def _answers(self, value):
         self.answers = json.dumps(value)
