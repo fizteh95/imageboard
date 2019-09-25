@@ -33,7 +33,28 @@
             {% endif %}
             {{post.body}}
         </p>
-            {% if post.answ_from_id.all().count() > 1 %}
+        <!-- 
+        
+        {% if len(post._answers) > 1 %}
+            <p>
+            <i>
+                {% for i in range(len(post._answers)) %}
+                    <a href="#post_num_{{ post._answers[i] }}">{{ post._answers[i] }}</a>{% if i == 0 %}, {% endif %}
+                {% endfor %}
+            </i>
+            </p>
+        {% endif %}
+
+        {% if len(post._answers) == 1 %}
+            <p>
+            <i>
+                <a href="#post_num_{{ post._answers[0] }}">{{ post._answers[0] }}</a>
+            </i>
+            </p>
+        {% endif %}
+        
+        -->
+        {% if post.answ_from_id.all().count() > 1 %}
             <p>
             <i>
                 {% for i, reply in zip(range(post.answ_from_id.all().count()), post.answ_from_id.all()) %}
@@ -41,15 +62,15 @@
                 {% endfor %}
             </i>
             </p>
-            {% endif %}
-            
-            {% if post.answ_from_id.all().count() == 1 %}
+        {% endif %}
+
+        {% if post.answ_from_id.all().count() == 1 %}
             <p>
             <i>
                 <a href="#post_num_{{post.answ_from_id.first().id}}">{{ post.answ_from_id.first().id }}</a>
             </i>
             </p>
-            {% endif %}
+        {% endif %}
             
         </div>
         <br>
