@@ -91,13 +91,14 @@ class Post(db.Model):
     board_name = db.Column(db.String(10), db.ForeignKey('board.ref'))
     answers = db.Column(db.String(100))
     # или просто сериализируем
-#     _ratings = Column(db.String, default='0.0')
-#     @property
-#     def ratings(self):
-#         return [float(x) for x in self._ratings.split(';')]
-#     @ratings.setter
-#     def ratings(self, value):
-#         self._ratings += ';%s' % value
+    #_ratings = Column(db.String, default='0.0')
+    @property
+    def _answers(self):
+        return json.loads(self.answers)
+    @ratings.setter
+    def _answers(self, value):
+        self.answers = json.dumps(value)
+    
     reply = db.relationship(
         'Post', secondary=answers,
         primaryjoin=(answers.c.answ_from_id == id),
