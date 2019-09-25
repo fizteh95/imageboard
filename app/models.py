@@ -95,10 +95,13 @@ class Post(db.Model):
     #_ratings = Column(db.String, default='0.0')
     @property
     def _answers(self):
-        if self.answers:
-            if type(json.loads(self.answers)) == list:
-              return json.loads(self.answers)
-        else:
+        try:
+            a = json.loads(self.answers)
+            if (type(a) == list) and (len(a) > 0):
+                return a
+            else:
+                return []
+        except:
             return []
     @_answers.setter
     def _answers(self, value):

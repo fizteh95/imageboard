@@ -25,7 +25,7 @@
 
             document.body.appendChild(div);   //  Добавим наш див на страницу
         }
-        function deleteDiv (event, element) 
+        function deleteDiv(event, element) 
         {
             document.body.removeChild(div);   // Удаление дива
             //  Удаляем обработчик события "уход курсора с элемента" текущей ссылки
@@ -61,7 +61,7 @@
             <p>
             <i>
                 {% for i in range((post._answers)|length) %}
-                    <a href="#post_num_{{ post._answers[i] }}">{{ post._answers[i] }}</a>{% if i == 0 %}, {% endif %}
+                    <a href="#post_num_{{ post._answers[i] }}" onmouseenter="ShowReply(event, this)" onmouseleave="deleteDiv(event, this)">{{ post._answers[i] }}</a>{% if i == 0 %}, {% endif %}
                 {% endfor %}
             </i>
             </p>
