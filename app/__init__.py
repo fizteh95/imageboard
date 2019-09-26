@@ -44,10 +44,21 @@ if not app.debug:
 
 from app import routes, models, errors
 
+
 import re
+from jinja2 import Markup
+
+
+_reply_re = re.compile(r'(>>\d+)')
+
 
 @app.template_filter('regex_replace')
-def regex_replace(s, find, replace):
-   """A non-optimal implementation of a regex filter"""
-   return re.sub(find, replace, s)
-    
+def nl2br(value):
+    result = ''
+    arr = _reply_re.split(value)
+    for i in range(len(arr)):
+        if i % 2 == 0:
+            result += arr[i]
+        else:
+            result += Markup('<a href="#post_num_' + str(arr[i]).split('>>')[-1] + '">' + arr[i] + '</a>')
+    return result
