@@ -18,8 +18,8 @@
             var div = document.createElement('div');
 
             div.style.position = 'absolute';
-            div.style.left = event.clientX;   // Координаты дива X и Y не забываем указать единицы измерения,
-            div.style.top = event.clientY;    // например 40px или 20%
+            div.style.left = event.pageX;   // Координаты дива X и Y не забываем указать единицы измерения,
+            div.style.top = event.pageY;    // например 40px или 20%
             div.style.background = 'red';   //  Див с красной заливкой ))
             div.appendChild(document.createTextNode('Я обычный текст'));  //  Добавим текст в див
 
@@ -52,7 +52,7 @@
             {% if post.image_ref %}
                 <img src="/static/image_posts/thumb/{{post.image_ref}}" onclick="ChangeURLPicture(event, this)">
             {% endif %}
-            {{post.body}}
+            {{post.body|regex_replace("(>>)(\d+)", '<a href="#post_num_\\2">>>\\2</a>')|safe}}
         </p>
         
 
@@ -61,7 +61,7 @@
             <p>
             <i>
                 {% for i in range((post._answers)|length) %}
-                    <a href="#post_num_{{ post._answers[i] }}" onmouseenter="ShowReply(event, this)" onmouseleave="deleteDiv(event, this)">{{ post._answers[i] }}</a>{% if i == 0 %}, {% endif %}
+                    {% if i != 0 %}, {% endif %}<a href="#post_num_{{ post._answers[i] }}" onmouseenter="ShowReply(event, this)" onmouseleave="deleteDiv(event, this)">{{ post._answers[i] }}</a>
                 {% endfor %}
             </i>
             </p>
