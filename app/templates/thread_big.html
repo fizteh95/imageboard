@@ -13,17 +13,21 @@
         function ShowReply(event, element)
         {
             // тут ещё айдишник надо менять
-            //var p = document.getElementById("para1");
-            //var p_prime = p.cloneNode(true);
-            var div = document.createElement('div');
+            abz = element;
+            let temp = abz.innerHTML
+            alert(temp)
+            // var p = document.getElementById(element.id);
+            // alert(element.id)
+            // var p_prime = p.cloneNode(true);
+            // // var div = document.createElement('div');
 
-            div.style.position = 'absolute';
-            div.style.left = event.pageX;   // Координаты дива X и Y не забываем указать единицы измерения,
-            div.style.top = event.pageY;    // например 40px или 20%
-            div.style.background = 'red';   //  Див с красной заливкой ))
-            div.appendChild(document.createTextNode('Я обычный текст'));  //  Добавим текст в див
+            // p_prime.style.position = 'absolute';
+            // p_prime.style.left = event.pageX;   // Координаты дива X и Y не забываем указать единицы измерения,
+            // p_prime.style.top = event.pageY;    // например 40px или 20%
+            // // div.style.background = 'red';   //  Див с красной заливкой ))
+            // // div.appendChild(document.createTextNode('Я обычный текст'));  //  Добавим текст в див
 
-            document.body.appendChild(div);   //  Добавим наш див на страницу
+            //document.body.appendChild(p_prime);   //  Добавим наш див на страницу
         }
         function deleteDiv(event, element) 
         {
@@ -35,10 +39,11 @@
 
     <style>
        .post {
-        border: 4px double black; /* Параметры границы */
-        background: #fc3; /* Цвет фона */
-        padding: 10px; /* Поля вокруг текста */
-       }
+            border: 1px double black;
+            background: #2d28172e;
+            border-radius: 7px;
+            padding: 10px;
+        }
     </style>
 
     <h2><a href="{{ url_for('board_b', board=board) }}">/{{board}}</a></h2>
