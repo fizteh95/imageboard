@@ -52,7 +52,7 @@
             {% if post.image_ref %}
                 <img src="/static/image_posts/thumb/{{post.image_ref}}" onclick="ChangeURLPicture(event, this)">
             {% endif %}
-            {{post.body|regex_replace("(>>)(\d+)", '<a href="#post_num_\\2">>>\\2</a>')|safe}}
+            {{post.body|regex_replace}}
         </p>
         
 
