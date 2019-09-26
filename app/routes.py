@@ -192,7 +192,7 @@ def thread_big(thread_num, board):
             p.image_ref = filename
             db.session.commit()
 
-        reply = re.findall(r'>>\d+\s', p.body)
+        reply = re.findall(r'>>\d+', p.body)
         for i in range(len(reply)):
             num = reply[i].split('>>')[-1]
             post_to_reply = Post.query.filter_by(id=num).first()
