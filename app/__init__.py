@@ -43,3 +43,11 @@ if not app.debug:
     app.logger.info('Microblog startup')
 
 from app import routes, models, errors
+
+import re
+
+@app.template_filter('regex_replace')
+def regex_replace(s, find, replace):
+   """A non-optimal implementation of a regex filter"""
+   return re.sub(find, replace, s)
+    
