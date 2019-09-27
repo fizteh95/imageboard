@@ -12,29 +12,52 @@
         }
         function ShowReply(event, element)
         {
-            // тут ещё айдишник надо менять
-            abz = element;
-            let id_post = '#' + abz.id.split('#')[1]
-            alert(temp)
-            var p = document.getElementById(id_post);
-            alert(p.innerHTML)
-            var p_prime = p.cloneNode(true);
-            // // var div = document.createElement('div');
+            let id_post = 'post_num_' + element.innerHTML
+            let p = document.getElementById(id_post);
+            let p_prime = p.cloneNode(true);
 
+            let p_prime_id = p_prime.id + '_show'
+            p_prime.id = p_prime_id
             p_prime.style.position = 'absolute';
-            p_prime.style.left = event.pageX;   // Координаты дива X и Y не забываем указать единицы измерения,
-            p_prime.style.top = event.pageY;    // например 40px или 20%
-            p_prime.onmouseleave="deleteDiv(event, this)"
-            // // div.style.background = 'red';   //  Див с красной заливкой ))
-            // // div.appendChild(document.createTextNode('Я обычный текст'));  //  Добавим текст в див
+            let test = event.currentTarget.left
+            //alert(test)
+            // if (test)
+            // {
+            //     //alert(element.parentNode.left)
+            //     p_prime.style.left = event.pageX - 30 - test
+            // }
+            // else 
+            // {
+            //     p_prime.style.left = event.pageX - 30 
+            // }
+            p_prime.style.left = event.pageX - 30 - element.parentNode.left//event.currentTarget.left//event.pageX - 30;   // Координаты дива X и Y не забываем указать единицы измерения,
+            //alert(p_prime.style.left)
+            // if (element.parentNode.top)
+            // {
+            //     //alert(element.parentNode.left)
+            //     p_prime.style.top = event.pageY - 30 - element.parentNode.top
+            // }
+            // else 
+            // {
+            //     p_prime.style.top = event.pageY - 30
+            // }
+            p_prime.style.top = event.pageY - 30 - element.parentNode.top;    // например 40px или 20%
 
-            document.body.appendChild(p_prime);   //  Добавим наш див на страницу
-        }
-        function deleteDiv(event, element) 
+            //let p1 = document.getElementById(p_prime.id);
+            //alert(p_prime_id)
+            setTimeout(() => p_prime.addEventListener('mouseleave', deleteDivvv), 10)
+            element.parentNode.parentNode.parentNode.appendChild(p_prime);   //  Добавим наш див на страницу //document.body.
+            
+            p_prime.style.border = '5px double red'
+
+            //p_prime.addEventListener('onmouseleave', deleteDiv(event, this));
+         }
+
+        function deleteDivvv(event, kk) 
         {
-            var p = document.getElementById(element.id);
-
-            document.body.removeChild(p);   // Удаление дива
+            //alert(event.currentTarget)
+            //document.body.removeChild(event.currentTarget);   // Удаление дива
+            event.currentTarget.remove()
             //  Удаляем обработчик события "уход курсора с элемента" текущей ссылки
             //e.target.removeEventListener('mouseout', deleteDiv, false);
         }
@@ -43,9 +66,11 @@
     <style>
        .post {
             border: 1px double black;
-            background: #2d28172e;
+            background: #cecece;
             border-radius: 7px;
             padding: 10px;
+            display: inline-block;
+            margin: 5px;
         }
     </style>
 
