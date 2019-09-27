@@ -14,26 +14,29 @@
         {
             // тут ещё айдишник надо менять
             abz = element;
-            let temp = abz.innerHTML
+            let id_post = '#' + abz.id.split('#')[1]
             alert(temp)
-            // var p = document.getElementById(element.id);
-            // alert(element.id)
-            // var p_prime = p.cloneNode(true);
+            var p = document.getElementById(id_post);
+            alert(p.innerHTML)
+            var p_prime = p.cloneNode(true);
             // // var div = document.createElement('div');
 
-            // p_prime.style.position = 'absolute';
-            // p_prime.style.left = event.pageX;   // Координаты дива X и Y не забываем указать единицы измерения,
-            // p_prime.style.top = event.pageY;    // например 40px или 20%
+            p_prime.style.position = 'absolute';
+            p_prime.style.left = event.pageX;   // Координаты дива X и Y не забываем указать единицы измерения,
+            p_prime.style.top = event.pageY;    // например 40px или 20%
+            p_prime.mouseleave="deleteDiv(event, this)"
             // // div.style.background = 'red';   //  Див с красной заливкой ))
             // // div.appendChild(document.createTextNode('Я обычный текст'));  //  Добавим текст в див
 
-            //document.body.appendChild(p_prime);   //  Добавим наш див на страницу
+            document.body.appendChild(p_prime);   //  Добавим наш див на страницу
         }
         function deleteDiv(event, element) 
         {
-            document.body.removeChild(div);   // Удаление дива
+            var p = document.getElementById(element.id);
+
+            document.body.removeChild(p);   // Удаление дива
             //  Удаляем обработчик события "уход курсора с элемента" текущей ссылки
-            e.target.removeEventListener('mouseout', deleteDiv, false);
+            //e.target.removeEventListener('mouseout', deleteDiv, false);
         }
     </script>
 
@@ -66,7 +69,7 @@
             <p>
             <i>
                 {% for i in range((post._answers)|length) %}
-                    {% if i != 0 %}, {% endif %}<a href="#post_num_{{ post._answers[i] }}" onmouseenter="ShowReply(event, this)" onmouseleave="deleteDiv(event, this)">{{ post._answers[i] }}</a>
+                    {% if i != 0 %}, {% endif %}<a href="#post_num_{{ post._answers[i] }}" onmouseenter="ShowReply(event, this)">{{ post._answers[i] }}</a>
                 {% endfor %}
             </i>
             </p>
