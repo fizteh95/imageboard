@@ -24,7 +24,7 @@
             p_prime.style.position = 'absolute';
             p_prime.style.left = event.pageX;   // Координаты дива X и Y не забываем указать единицы измерения,
             p_prime.style.top = event.pageY;    // например 40px или 20%
-            p_prime.mouseleave="deleteDiv(event, this)"
+            p_prime.onmouseleave="deleteDiv(event, this)"
             // // div.style.background = 'red';   //  Див с красной заливкой ))
             // // div.appendChild(document.createTextNode('Я обычный текст'));  //  Добавим текст в див
 
