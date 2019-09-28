@@ -21,42 +21,36 @@
             p_prime.style.position = 'absolute';
             let test = event.currentTarget.left
             //alert(test)
-            // if (test)
-            // {
-            //     //alert(element.parentNode.left)
-            //     p_prime.style.left = event.pageX - 30 - test
-            // }
-            // else 
-            // {
-            //     p_prime.style.left = event.pageX - 30 
-            // }
-            p_prime.style.left = event.pageX - 30 - element.parentNode.left//event.currentTarget.left//event.pageX - 30;   // Координаты дива X и Y не забываем указать единицы измерения,
-            //alert(p_prime.style.left)
-            // if (element.parentNode.top)
-            // {
-            //     //alert(element.parentNode.left)
-            //     p_prime.style.top = event.pageY - 30 - element.parentNode.top
-            // }
-            // else 
-            // {
-            //     p_prime.style.top = event.pageY - 30
-            // }
-            p_prime.style.top = event.pageY - 30 - element.parentNode.top;    // например 40px или 20%
+            // if (element.parentNode.parentNode.parentNode.id.includes('_show'))
 
-            //let p1 = document.getElementById(p_prime.id);
-            //alert(p_prime_id)
+            // p_prime.style.left = event.pageX - 40
+            // p_prime.style.top = event.pageY - 120
+
             setTimeout(() => p_prime.addEventListener('mouseleave', deleteDivvv), 10)
-            element.parentNode.parentNode.parentNode.appendChild(p_prime);   //  Добавим наш див на страницу //document.body.
-            
+            if (element.parentNode.parentNode.parentNode.id.includes('_show'))
+            {
+                element.parentNode.parentNode.parentNode.appendChild(p_prime);
+                p_prime.style.left = event.pageX //тут надо вычесть координаты предыдущего элемента
+                p_prime.style.top = event.pageY //и тут
+            }
+            else
+            {
+                element.parentNode.parentNode.parentNode.parentNode.appendChild(p_prime);
+                p_prime.style.left = event.pageX - 30
+                p_prime.style.top = event.pageY - 160
+            }
+            //element.parentNode.parentNode.parentNode.parentNode.appendChild(p_prime);
+               //  Добавим наш див на страницу //document.body.
+            //element.parentNode.parentNode.
             p_prime.style.border = '5px double red'
+            p_prime.style.zIndex = "10"//this.style.zInsex+2
 
             //p_prime.addEventListener('onmouseleave', deleteDiv(event, this));
          }
 
-        function deleteDivvv(event, kk) 
+        function deleteDivvv(event) 
         {
-            //alert(event.currentTarget)
-            //document.body.removeChild(event.currentTarget);   // Удаление дива
+
             event.currentTarget.remove()
             //  Удаляем обработчик события "уход курсора с элемента" текущей ссылки
             //e.target.removeEventListener('mouseout', deleteDiv, false);
@@ -77,6 +71,9 @@
     <h2><a href="{{ url_for('board_b', board=board) }}">/{{board}}</a></h2>
     <br>
     <br>
+
+
+    <div style="position: relative;">
     {% for post in posts %}
         <div class="post" id="post_num_{{post.id}}">
         {{post.id}}
@@ -114,6 +111,7 @@
         </div>
         <br>
     {% endfor %}
+    </div>
     
 <div>
     <form action="" enctype="multipart/form-data" method="post">
