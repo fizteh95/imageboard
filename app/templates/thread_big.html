@@ -29,24 +29,16 @@
             let p_prime_id = p_prime.id + '_show'
             p_prime.id = p_prime_id
             p_prime.style.position = 'absolute';
-            let test = event.currentTarget.left
+            p_prime.classList.add('reply_post');
 
+            //mouseout
             setTimeout(() => p_prime.addEventListener('mouseleave', deleteDivvv), 10)
-            if (element.parentNode.parentNode.parentNode.id.includes('_show'))
-            {
-                element.parentNode.parentNode.parentNode.appendChild(p_prime);
-                p_prime.style.left = getCoords(event.currentTarget).left - getCoords(event.currentTarget.parentNode.parentNode.parentNode).left - 30
-                p_prime.style.top = getCoords(event.currentTarget).top - getCoords(event.currentTarget.parentNode.parentNode.parentNode).top -30
 
-                p_prime.style.overflow = "visible"
-                p_prime.style.width = "100%"
-            }
-            else
-            {
-                element.parentNode.parentNode.parentNode.parentNode.appendChild(p_prime);
-                p_prime.style.left = event.pageX - 30
-                p_prime.style.top = event.pageY - 160
-            }
+            let thread_div = document.getElementById('thread_div');
+            thread_div.appendChild(p_prime);
+            //потом добавим условие на расположение, слева или справа
+            p_prime.style.left = event.pageX - 20
+            p_prime.style.top = event.pageY - 160
 
             p_prime.style.border = '5px double red'
             p_prime.style.zIndex = "10"
@@ -54,14 +46,32 @@
 
         function deleteDivvv(event) 
         {
-
-            event.currentTarget.remove()
+            if (!(event.relatedTarget.id.includes('_show')))
+            {
+                //event.currentTarget.remove()
+                let thread_div = document.getElementById('thread_div');
+                let all_replies = thread_div.getElementsByClassName("reply_post")
+                Array.from(all_replies).forEach((item, index, array) =>
+                {
+                  item.remove()
+                });
+            }
+            else if (event.relatedTarget.id == event.target.previousSibling.id)
+            {
+                event.currentTarget.remove()
+            }
         }
+
+        // function addListenerToInlineReply()
+        // {
+            
+        // }
+        
     </script>
 
     <style>
        .post {
-            border: 1px double black;
+            border: 1px solid black;
             background: #cecece;
             border-radius: 7px;
             padding: 10px;
@@ -75,7 +85,7 @@
     <br>
 
 
-    <div style="position: relative;">
+    <div style="position: relative;" id="thread_div">
     {% for post in posts %}
         <div class="post" id="post_num_{{post.id}}">
         {{post.id}}
@@ -102,7 +112,7 @@
         {% if (post._answers|length) == 1 %}
             <p>
             <i>
-                <a href="#post_num_{{ post._answers[0] }}">{{ post._answers[0] }}</a>
+                <a href="#post_num_{{ post._answers[0] }}" onmouseenter="ShowReply(event, this)">{{ post._answers[0] }}</a>
             </i>
             </p>
         {% endif %}
