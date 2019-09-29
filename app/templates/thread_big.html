@@ -30,19 +30,14 @@
             p_prime.id = p_prime_id
             p_prime.style.position = 'absolute';
             let test = event.currentTarget.left
-            //alert(test)
-            // if (element.parentNode.parentNode.parentNode.id.includes('_show'))
-
-            // p_prime.style.left = event.pageX - 40
-            // p_prime.style.top = event.pageY - 120
 
             setTimeout(() => p_prime.addEventListener('mouseleave', deleteDivvv), 10)
             if (element.parentNode.parentNode.parentNode.id.includes('_show'))
             {
                 element.parentNode.parentNode.parentNode.appendChild(p_prime);
-                p_prime.style.left = getCoords(event.currentTarget).left - getCoords(event.currentTarget.parentNode.parentNode.parentNode).left - 30//event.pageX //тут надо вычесть координаты предыдущего элемента
-                //alert(getCoords(event.currentTarget).top)
-                p_prime.style.top = getCoords(event.currentTarget).top - getCoords(event.currentTarget.parentNode.parentNode.parentNode).top -30//event.currentTarget.top//event.pageY //и тут
+                p_prime.style.left = getCoords(event.currentTarget).left - getCoords(event.currentTarget.parentNode.parentNode.parentNode).left - 30
+                p_prime.style.top = getCoords(event.currentTarget).top - getCoords(event.currentTarget.parentNode.parentNode.parentNode).top -30
+
                 p_prime.style.overflow = "visible"
                 p_prime.style.width = "100%"
             }
@@ -52,21 +47,15 @@
                 p_prime.style.left = event.pageX - 30
                 p_prime.style.top = event.pageY - 160
             }
-            //element.parentNode.parentNode.parentNode.parentNode.appendChild(p_prime);
-               //  Добавим наш див на страницу //document.body.
-            //element.parentNode.parentNode.
-            p_prime.style.border = '5px double red'
-            p_prime.style.zIndex = "10"//this.style.zInsex+2
 
-            //p_prime.addEventListener('onmouseleave', deleteDiv(event, this));
+            p_prime.style.border = '5px double red'
+            p_prime.style.zIndex = "10"
          }
 
         function deleteDivvv(event) 
         {
 
             event.currentTarget.remove()
-            //  Удаляем обработчик события "уход курсора с элемента" текущей ссылки
-            //e.target.removeEventListener('mouseout', deleteDiv, false);
         }
     </script>
 
