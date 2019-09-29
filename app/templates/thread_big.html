@@ -10,6 +10,16 @@
             {abz.src = "/static/image_posts/" + temp.split("/")[temp.split("/").length - 1];}
             else {abz.src = "/static/image_posts/thumb/" + temp.split("/")[temp.split("/").length - 1];}
         }
+
+        function getCoords(elem) { // кроме IE8-
+          var box = elem.getBoundingClientRect();
+
+          return {
+            top: box.top + pageYOffset,
+            left: box.left + pageXOffset
+                };
+        }
+
         function ShowReply(event, element)
         {
             let id_post = 'post_num_' + element.innerHTML
@@ -30,8 +40,11 @@
             if (element.parentNode.parentNode.parentNode.id.includes('_show'))
             {
                 element.parentNode.parentNode.parentNode.appendChild(p_prime);
-                p_prime.style.left = event.pageX //тут надо вычесть координаты предыдущего элемента
-                p_prime.style.top = event.pageY //и тут
+                p_prime.style.left = getCoords(event.currentTarget).left - getCoords(event.currentTarget.parentNode.parentNode.parentNode).left - 30//event.pageX //тут надо вычесть координаты предыдущего элемента
+                //alert(getCoords(event.currentTarget).top)
+                p_prime.style.top = getCoords(event.currentTarget).top - getCoords(event.currentTarget.parentNode.parentNode.parentNode).top -30//event.currentTarget.top//event.pageY //и тут
+                p_prime.style.overflow = "visible"
+                p_prime.style.width = "100%"
             }
             else
             {
@@ -51,7 +64,7 @@
         function deleteDivvv(event) 
         {
 
-            event.currentTarget.remove()
+            //event.currentTarget.remove()
             //  Удаляем обработчик события "уход курсора с элемента" текущей ссылки
             //e.target.removeEventListener('mouseout', deleteDiv, false);
         }
@@ -64,7 +77,7 @@
             border-radius: 7px;
             padding: 10px;
             display: inline-block;
-            margin: 5px;
+            margin-top: 5px;
         }
     </style>
 
