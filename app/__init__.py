@@ -60,5 +60,5 @@ def nl2br(value):
         if i % 2 == 0:
             result += arr[i]
         else:
-            result += Markup('<a href="#post_num_' + str(arr[i]).split('>>')[-1] + '">' + arr[i] + '</a>')
+            result += Markup('<a href="#post_num_' + str(arr[i]).split('>>')[-1] + '" class="inline_reply" onmouseenter="ShowReply(event, this)">' + arr[i] + '</a>')
     return result

@@ -22,7 +22,17 @@
 
         function ShowReply(event, element)
         {
-            let id_post = 'post_num_' + element.innerHTML
+            let id_post = ''
+            if (element.classList.contains('low_answer'))
+            {
+                id_post = 'post_num_' + element.innerHTML
+            }
+            else if (element.classList.contains('inline_reply'))
+            {
+                id_post = 'post_num_' + element.innerHTML.split("&gt;&gt;")[1]
+                //alert(id_post)
+            }
+            //alert(id_post)
             let p = document.getElementById(id_post);
             let p_prime = p.cloneNode(true);
 
@@ -42,7 +52,7 @@
 
             p_prime.style.border = '5px double red'
             p_prime.style.zIndex = "10"
-         }
+        }
 
         function deleteDivvv(event) 
         {
@@ -64,9 +74,9 @@
 
         // function addListenerToInlineReply()
         // {
-            
+
         // }
-        
+
     </script>
 
     <style>
@@ -103,7 +113,7 @@
             <p>
             <i>
                 {% for i in range((post._answers)|length) %}
-                    {% if i != 0 %}, {% endif %}<a href="#post_num_{{ post._answers[i] }}" onmouseenter="ShowReply(event, this)">{{ post._answers[i] }}</a>
+                    {% if i != 0 %}, {% endif %}<a href="#post_num_{{ post._answers[i] }}" onmouseenter="ShowReply(event, this)" class="low_answer">{{ post._answers[i] }}</a>
                 {% endfor %}
             </i>
             </p>
@@ -112,7 +122,7 @@
         {% if (post._answers|length) == 1 %}
             <p>
             <i>
-                <a href="#post_num_{{ post._answers[0] }}" onmouseenter="ShowReply(event, this)">{{ post._answers[0] }}</a>
+                <a href="#post_num_{{ post._answers[0] }}" onmouseenter="ShowReply(event, this)" class="low_answer">{{ post._answers[0] }}</a>
             </i>
             </p>
         {% endif %}
