@@ -1,3 +1,4 @@
+  
 {% extends "base.html" %}
 
 {% block content %}
@@ -10,14 +11,38 @@
             {abz.src = "/static/image_posts/" + temp.split("/")[temp.split("/").length - 1];}
             else {abz.src = "/static/image_posts/thumb/" + temp.split("/")[temp.split("/").length - 1];}
         }
-
         function getCoords(elem) { // кроме IE8-
           var box = elem.getBoundingClientRect();
-
           return {
             top: box.top + pageYOffset,
             left: box.left + pageXOffset
                 };
+        }
+
+
+        // let show_timer = 0;
+        // let collapse_timer = 0;
+
+        function ref_over()
+        {
+            //показываем всплывающий пост
+            //ShowReply(event, element)
+            //по mouseover запустить таймер на показ 
+            show_timer = setTimeout()//() => p_prime.addEventListener('mouseleave', deleteDivvv), 10)
+        }
+        function ref_out()
+        {
+            clearTimeout(show_timer);
+        }
+        function show_over()
+        {
+            //запускаем таймер на удаление постов
+            //deleteDivvv(event) 
+            collapse_timer = setTimeout()//() => p_prime.addEventListener('mouseleave', deleteDivvv), 10)
+        }
+        function show_out()
+        {
+            clearTimeout(collapse_timer);
         }
 
         function ShowReply(event, element)
@@ -30,35 +55,35 @@
             else if (element.classList.contains('inline_reply'))
             {
                 id_post = 'post_num_' + element.innerHTML.split("&gt;&gt;")[1]
-                //alert(id_post)
             }
-            //alert(id_post)
             let p = document.getElementById(id_post);
             let p_prime = p.cloneNode(true);
-
             let p_prime_id = p_prime.id + '_show'
             p_prime.id = p_prime_id
             p_prime.style.position = 'absolute';
-            p_prime.classList.add('reply_post');
+            p_prime.classList.add('reply_post')
 
-            //mouseout
-            setTimeout(() => p_prime.addEventListener('mouseleave', deleteDivvv), 10)
-
+            //setTimeout(() => p_prime.addEventListener('mouseleave', deleteDivvv), 10)
+            p_prime.addEventListener('mouseleave', deleteDivvv)
             let thread_div = document.getElementById('thread_div');
             thread_div.appendChild(p_prime);
             //потом добавим условие на расположение, слева или справа
             p_prime.style.left = event.pageX - 20
             p_prime.style.top = event.pageY - 160
 
+            p_prime.style.border = "1px solid black"
+            p_prime.style.background = "#cecece"
+            p_prime.style.borderRadius = "7px"
+
             p_prime.style.border = '5px double red'
             p_prime.style.zIndex = "10"
         }
-
         function deleteDivvv(event) 
         {
+            //здесь надо будет идти по сиблингам постов, удаляя с конца пока не узнаем, на каком сейчас курсор
+            //для этого надо будет ставить класс на пост, в котором оказался курсор
             if (!(event.relatedTarget.id.includes('_show')))
             {
-                //event.currentTarget.remove()
                 let thread_div = document.getElementById('thread_div');
                 let all_replies = thread_div.getElementsByClassName("reply_post")
                 Array.from(all_replies).forEach((item, index, array) =>
@@ -72,11 +97,6 @@
             }
         }
 
-        // function addListenerToInlineReply()
-        // {
-
-        // }
-
     </script>
 
     <style>
@@ -84,6 +104,11 @@
             border: 1px solid black;
             background: #cecece;
             border-radius: 7px;
+            padding: 10px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+        .OP_post {
             padding: 10px;
             display: inline-block;
             margin-top: 5px;
@@ -97,10 +122,14 @@
 
     <div style="position: relative;" id="thread_div">
     {% for post in posts %}
+        {% if post.id == post.OP_num %}
+        <div class="OP_post" id="post_num_{{post.id}}">
+        {% else %}
         <div class="post" id="post_num_{{post.id}}">
+        {% endif %}
         {{post.id}}
         {% if post.id == post.OP_num %}
-        <i style="color:#00ff00">#OP</i>
+        <span style="color:#11ff00">#OP</span>
         {% endif %}
         {{post.timestamp}}
         <p>
