@@ -99,6 +99,9 @@
     {% for post in posts %}
         <div class="post" id="post_num_{{post.id}}">
         {{post.id}}
+        {% if post.id == post.OP_num %}
+        <i style="color:#00ff00">#OP</i>
+        {% endif %}
         {{post.timestamp}}
         <p>
             {% if post.image_ref %}
