@@ -166,11 +166,21 @@ import re
 @app.route('/')
 def index():
     boards = Board.query.all()
+    if 'user' in session:
+        pass
+    else:
+        session['user'] = os.urandom(24)
     return render_template('index.html', boards=boards)
 
 
 @app.route('/<board>/res/<thread_num>', methods=['GET', 'POST'])
 def thread_big(thread_num, board):
+
+    if 'user' in session:
+        pass
+    else:
+        session['user'] = os.urandom(24)
+
     form = PostForm()
     if form.validate_on_submit():
         p = Post(body=form.post.data, OP_flag=0, OP_num=thread_num, board_name=board)
@@ -211,6 +221,12 @@ def sort_of_threads(list_of_threads):
 
 @app.route('/<board>', methods=['GET', 'POST'])
 def board_b(board):
+
+    if 'user' in session:
+        pass
+    else:
+        session['user'] = os.urandom(24)
+
     form = ThreadForm()
     if form.validate_on_submit():
         p = Post(body=form.post.data, OP_flag=1, board_name=board)
