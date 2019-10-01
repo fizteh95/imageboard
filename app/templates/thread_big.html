@@ -23,25 +23,37 @@
         // let show_timer = 0;
         // let collapse_timer = 0;
 
-        function ref_over()
+        function ref_over(event, element)
         {
             //показываем всплывающий пост
             //ShowReply(event, element)
             //по mouseover запустить таймер на показ 
-            show_timer = setTimeout()//() => p_prime.addEventListener('mouseleave', deleteDivvv), 10)
+            show_timer = setTimeout(ShowReply, 500, event, element)//() => p_prime.addEventListener('mouseleave', deleteDivvv), 10)
         }
         function ref_out()
         {
             clearTimeout(show_timer);
         }
-        function show_over()
+        function show_over(event)
         {
             //запускаем таймер на удаление постов
             //deleteDivvv(event) 
-            collapse_timer = setTimeout()//() => p_prime.addEventListener('mouseleave', deleteDivvv), 10)
+            collapse_timer = setTimeout(deleteDivvv, 500, event)//() => p_prime.addEventListener('mouseleave', deleteDivvv), 10)
         }
         function show_out()
         {
+            //Нужна проверка куда вернулись
+            all_hover = document.querySelectorAll( ":hover" );
+            //checkSibling(event, element)
+            hover_item = Array.from(all_hover).find(item => item.classList.contains('reply_post'));
+            //Нужно удаление сиблингов
+            
+            
+            //Array.from(all_hover).forEach((item, index, array) =>
+            //{
+            //    item.remove()
+            //});
+
             clearTimeout(collapse_timer);
         }
 
@@ -91,9 +103,13 @@
                   item.remove()
                 });
             }
-            else if ((event.relatedTarget.id == event.target.previousSibling.id)&&(getCoords(event.relatedTarget).top == getCoords(event.target.previousSibling).top))
+            //else if ((event.relatedTarget.id == event.target.previousSibling.id)&&(getCoords(event.relatedTarget).top == getCoords(event.target.previousSibling).top))
+            //{
+            //    event.currentTarget.remove()
+            //}
+            function checkSibling(event, element)
             {
-                event.currentTarget.remove()
+                
             }
         }
 
