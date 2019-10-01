@@ -51,6 +51,7 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
 class PostForm(FlaskForm):
     post = TextAreaField('Say something', validators=[DataRequired()])
     image = FileField('Put your image here')
+    written_by_OP = BooleanField("OP's mark")
     submit = SubmitField('Submit')
 
 
