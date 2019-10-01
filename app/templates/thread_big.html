@@ -1,8 +1,10 @@
-  
 {% extends "base.html" %}
 
 {% block content %}
     <script>
+
+        let hover_object;
+
         function ChangeURLPicture(event, element)
         {
             abz = element;
@@ -20,15 +22,9 @@
         }
 
 
-        // let show_timer = 0;
-        // let collapse_timer = 0;
-
         function ref_over(event, element)
         {
-            //показываем всплывающий пост
-            //ShowReply(event, element)
-            //по mouseover запустить таймер на показ 
-            show_timer = setTimeout(ShowReply, 500, event, element)//() => p_prime.addEventListener('mouseleave', deleteDivvv), 10)
+            show_timer = setTimeout(ShowReply, 500, event, element)
         }
         function ref_out()
         {
@@ -37,26 +33,35 @@
         function show_over(event)
         {
             //запускаем таймер на удаление постов
-            //deleteDivvv(event) 
-            collapse_timer = setTimeout(deleteDivvv, 500, event)//() => p_prime.addEventListener('mouseleave', deleteDivvv), 10)
+            collapse_timer = setTimeout(deleteDivvv, 500, event)
         }
-        function show_out()
+        function show_out(event)
         {
-            //Нужна проверка куда вернулись
-            all_hover = document.querySelectorAll( ":hover" );
-            //checkSibling(event, element)
-            hover_item = Array.from(all_hover).find(item => item.classList.contains('reply_post'));
-            //Нужно удаление сиблингов
-            
-            
-            //Array.from(all_hover).forEach((item, index, array) =>
-            //{
-            //    item.remove()
-            //});
+            if (typeof collapse_timer !=="undefined")
+            {
+                hover_object = event.target
+                clearTimeout(collapse_timer)
 
-            clearTimeout(collapse_timer);
+                //Нужна проверка куда вернулись
+                let thread_div = document.getElementById('thread_div');
+                let all_replies = thread_div.getElementsByClassName("reply_post")
+
+                //удаление сиблингов
+                let temp = -1;
+                Array.from(all_replies).forEach((item, index, array) =>
+                {
+                    if (item.id == hover_object.id)
+                    {
+                        temp = index
+                    }
+                    if ((temp > -1)&&(index > temp))
+                    {
+                        item.remove()
+                    }
+                });
+
+            }
         }
-
         function ShowReply(event, element)
         {
             let id_post = ''
@@ -74,26 +79,22 @@
             p_prime.id = p_prime_id
             p_prime.style.position = 'absolute';
             p_prime.classList.add('reply_post')
-
-            //setTimeout(() => p_prime.addEventListener('mouseleave', deleteDivvv), 10)
-            p_prime.addEventListener('mouseleave', deleteDivvv)
+            
+            p_prime.addEventListener('mouseleave', show_over)
+            p_prime.addEventListener('mouseenter', show_out)
             let thread_div = document.getElementById('thread_div');
             thread_div.appendChild(p_prime);
             //потом добавим условие на расположение, слева или справа
             p_prime.style.left = event.pageX - 20
             p_prime.style.top = event.pageY - 160
-
             p_prime.style.border = "1px solid black"
             p_prime.style.background = "#cecece"
             p_prime.style.borderRadius = "7px"
-
             p_prime.style.border = '5px double red'
             p_prime.style.zIndex = "10"
         }
         function deleteDivvv(event) 
         {
-            //здесь надо будет идти по сиблингам постов, удаляя с конца пока не узнаем, на каком сейчас курсор
-            //для этого надо будет ставить класс на пост, в котором оказался курсор
             if (!(event.relatedTarget.id.includes('_show')))
             {
                 let thread_div = document.getElementById('thread_div');
@@ -103,16 +104,8 @@
                   item.remove()
                 });
             }
-            //else if ((event.relatedTarget.id == event.target.previousSibling.id)&&(getCoords(event.relatedTarget).top == getCoords(event.target.previousSibling).top))
-            //{
-            //    event.currentTarget.remove()
-            //}
-            function checkSibling(event, element)
-            {
-                
-            }
-        }
 
+        }
     </script>
 
     <style>
@@ -161,7 +154,7 @@
             <p>
             <i>
                 {% for i in range((post._answers)|length) %}
-                    {% if i != 0 %}, {% endif %}<a href="#post_num_{{ post._answers[i] }}" onmouseenter="ShowReply(event, this)" class="low_answer">{{ post._answers[i] }}</a>
+                    {% if i != 0 %}, {% endif %}<a href="#post_num_{{ post._answers[i] }}" onmouseenter="ref_over(event, this)" onmouseleave="ref_out()" class="low_answer">{{ post._answers[i] }}</a>
                 {% endfor %}
             </i>
             </p>
@@ -170,7 +163,7 @@
         {% if (post._answers|length) == 1 %}
             <p>
             <i>
-                <a href="#post_num_{{ post._answers[0] }}" onmouseenter="ShowReply(event, this)" class="low_answer">{{ post._answers[0] }}</a>
+                <a href="#post_num_{{ post._answers[0] }}" onmouseenter="ref_over(event, this)" onmouseleave="ref_out()" class="low_answer">{{ post._answers[0] }}</a>
             </i>
             </p>
         {% endif %}
