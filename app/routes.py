@@ -186,7 +186,7 @@ def thread_big(thread_num, board):
     form = PostForm()
     if form.validate_on_submit():
         OP_flag = form.written_by_OP.data
-        p = Post(body=form.post.data, OP_flag=0, OP_num=thread_num, board_name=board)  # guest_id=session.get('user')
+        p = Post(body=form.post.data, OP_flag=OP_flag, OP_num=thread_num, board_name=board)  # guest_id=session.get('user')
         db.session.add(p)
         db.session.commit()
 
