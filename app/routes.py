@@ -170,6 +170,7 @@ def index():
         pass
     else:
         session['user'] = os.urandom(24)
+        session.permanent = True
     return render_template('index.html', boards=boards)
 
 
@@ -180,6 +181,7 @@ def thread_big(thread_num, board):
         pass
     else:
         session['user'] = os.urandom(24)
+        session.permanent = True
 
     form = PostForm()
     if form.validate_on_submit():
@@ -226,6 +228,7 @@ def board_b(board):
         pass
     else:
         session['user'] = os.urandom(24)
+        session.permanent = True
 
     form = ThreadForm()
     if form.validate_on_submit():
