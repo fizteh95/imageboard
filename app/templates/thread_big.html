@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+ 
 {% block content %}
     <script>
 
@@ -131,7 +131,7 @@
 
     <div style="position: relative;" id="thread_div">
     {% for post in posts %}
-        {% if post.id == post.OP_num %}
+        {% if (post.id == post.OP_num) or (OP_flag == 1) %}
         <div class="OP_post" id="post_num_{{post.id}}">
         {% else %}
         <div class="post" id="post_num_{{post.id}}">
@@ -184,8 +184,7 @@
             {{ form.image(size=16) }}<br>
         </p>
         <p>
-            {{ form.post.label }}
-            {% if  %}<br>
+            {{ form.post.label }}<br>
             {{ form.post(cols=32, rows=4) }}<br>
             {% for error in form.post.errors %}
             <span style="color: red;">[{{ error }}]</span>

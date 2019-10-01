@@ -6,7 +6,7 @@ from flask import render_template, flash, redirect, url_for, request
 # from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm
 # from app.models import User, Post
 
-
+ 
 # @app.before_request
 # def before_request():
 #     if current_user.is_authenticated:
@@ -241,9 +241,11 @@ def board_b(board):
         db.session.commit()
         return redirect(url_for('thread_big', board=board, thread_num=p.id))
     # thread = Post.query.filter_by(OP_num=p.id).order_by(Post.timestamp)
+    # условие равенства айди и номера оп-поста
     OP_posts = Post.query.filter_by(board_name=board, OP_flag=1).order_by(Post.timestamp)
     new_posts = []
     for OP in OP_posts:
+        # изменить фильтр поиска op_flag
         new_posts.append([OP] + Post.query.filter_by(OP_num=OP.OP_num, OP_flag=0).order_by(Post.timestamp)[-3:])
     new_posts.sort(key=sort_of_threads, reverse=True)
     # разворачивание списка
