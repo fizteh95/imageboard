@@ -185,7 +185,7 @@ def thread_big(thread_num, board):
 
     form = PostForm()
     if form.validate_on_submit():
-        p = Post(body=form.post.data, OP_flag=0, OP_num=thread_num, board_name=board)
+        p = Post(body=form.post.data, OP_flag=0, OP_num=thread_num, board_name=board)  # guest_id=session.get('user')
         db.session.add(p)
         db.session.commit()
 
@@ -215,7 +215,7 @@ def thread_big(thread_num, board):
         return redirect(url_for('thread_big', board=board, thread_num=thread_num, _anchor=("post_num_" + str(p.id))))
     thread = Post.query.filter_by(
         OP_num=thread_num).order_by(Post.timestamp)
-    return render_template('thread_big.html', posts=thread, board=board, form=form)
+    return render_template('thread_big.html', posts=thread, board=board, form=form, guest=session.get('user'))
 
 
 def sort_of_threads(list_of_threads):
