@@ -6,11 +6,20 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 # from flask_login import LoginManager
 from config import Config
+from flask_misaka import Misaka
 
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+Misaka(app=app, escape    = True,
+                no_images = True,
+                wrap      = True,
+                autolink  = True,
+                no_intra_emphasis = True,
+                space_headers     = True)
+
 # login = LoginManager(app)
 # login.login_view = 'login'
 
