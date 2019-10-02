@@ -1,12 +1,12 @@
 # from datetime import datetime
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, session
 # from flask_login import login_user, logout_user, current_user, login_required
 # from werkzeug.urls import url_parse
 # from app import app, db
 # from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm
 # from app.models import User, Post
 
- 
+
 # @app.before_request
 # def before_request():
 #     if current_user.is_authenticated:
@@ -190,7 +190,7 @@ def thread_big(thread_num, board):
             OP_flag = 1
         else:
             OP_flag = 0
-        p = Post(body=form.post.data, OP_flag=OP_flag, OP_num=thread_num, board_name=board)  # guest_id=session.get('user')
+        p = Post(body=form.post.data, OP_flag=OP_flag, OP_num=thread_num, board_name=board, guest_id=session.get('user'))
         db.session.add(p)
         db.session.commit()
 
@@ -237,7 +237,7 @@ def board_b(board):
 
     form = ThreadForm()
     if form.validate_on_submit():
-        p = Post(body=form.post.data, OP_flag=1, board_name=board)
+        p = Post(body=form.post.data, OP_flag=1, board_name=board, guest_id=session.get('user'))
         db.session.add(p)
         db.session.commit()
         # надо записывать айди оп поста в сам оп пост
@@ -246,11 +246,11 @@ def board_b(board):
         return redirect(url_for('thread_big', board=board, thread_num=p.id))
     # thread = Post.query.filter_by(OP_num=p.id).order_by(Post.timestamp)
     # условие равенства айди и номера оп-поста
-    OP_posts = Post.query.filter_by(board_name=board, id=OP_num).order_by(Post.timestamp)
+    OP_posts = Post.query.filter(Post.board_name == board, Post.id == Post.OP_num).order_by(Post.timestamp)
     new_posts = []
     for OP in OP_posts:
         # изменить фильтр поиска op_flag
-        new_posts.append([OP] + Post.query.filter_by(OP_num=OP.OP_num, id!=OP.OP_num).order_by(Post.timestamp)[-3:])
+        new_posts.append([OP] + Post.query.filter(Post.OP_num == OP.OP_num, Post.id != OP.OP_num).order_by(Post.timestamp)[-3:])
     new_posts.sort(key=sort_of_threads, reverse=True)
     # разворачивание списка
     listmerge = (lambda x: [el for lst in x for el in lst])(new_posts)
