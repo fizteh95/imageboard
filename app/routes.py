@@ -161,6 +161,7 @@ from app.forms import PostForm, ThreadForm
 import os
 from PIL import Image
 import re
+import datetime
 
 
 @app.route('/')
@@ -190,9 +191,18 @@ def thread_big(thread_num, board):
             OP_flag = 1
         else:
             OP_flag = 0
-        p = Post(body=form.post.data, OP_flag=OP_flag, OP_num=thread_num, board_name=board, guest_id=session.get('user'))
+        p = Post(body=form.post.data, OP_flag=OP_flag, OP_num=thread_num, board_name=board, guest_id=session.get('user'), is_sage=0)
         db.session.add(p)
         db.session.commit()
+        
+        # Поднимаем тред
+        if (not form.sage.data) and (len(Post.query.filter_by(OP_num=thread_num)) < 50):
+            OP_p = Post.query.filter_by(id=thread_num).first()
+            OP_p.last_bump = datetime.utcnow
+            db.session.commit()
+        else: #if (form.sage.data):
+            p.is_sage = 1
+            db.session.commit()
 
         file = request.files['image']
         # if file and allowed_file(file.filename):
@@ -224,7 +234,7 @@ def thread_big(thread_num, board):
 
 
 def sort_of_threads(list_of_threads):
-    return list_of_threads[-1].timestamp
+    return list_of_threads[0].last_bump
 
 @app.route('/<board>', methods=['GET', 'POST'])
 def board_b(board):
@@ -237,14 +247,24 @@ def board_b(board):
 
     form = ThreadForm()
     if form.validate_on_submit():
-        p = Post(body=form.post.data, OP_flag=1, board_name=board, guest_id=session.get('user'))
+        p = Post(body=form.post.data, OP_flag=1, board_name=board, guest_id=session.get('user'), last_bump=datetime.utcnow)
         db.session.add(p)
         db.session.commit()
         # надо записывать айди оп поста в сам оп пост
         p.OP_num = p.id
         db.session.commit()
+        
+        # удаляем уплывшие треды
+        list_of_threads = Post.query.filter(Post.board_name == board, Post.OP_num == Post.id).all()       
+        ext_threads = list_of_threads[20:]
+        if (len(ext_threads) > 0):
+            for item in ext_threads:
+                all_posts = Post.query.filter_by(OP_num=item.OP_num).all()
+                db.session.delete_all(all_posts)
+                db.session.commit()
+        
         return redirect(url_for('thread_big', board=board, thread_num=p.id))
-    # thread = Post.query.filter_by(OP_num=p.id).order_by(Post.timestamp)
+    
     # условие равенства айди и номера оп-поста
     OP_posts = Post.query.filter(Post.board_name == board, Post.id == Post.OP_num).order_by(Post.timestamp)
     new_posts = []
