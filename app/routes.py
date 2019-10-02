@@ -259,8 +259,9 @@ def board_b(board):
         ext_threads = list_of_threads[20:]
         if (len(ext_threads) > 0):
             for item in ext_threads:
-                all_posts = Post.query.filter_by(OP_num=item.OP_num).all()
-                db.session.delete_all(all_posts)
+                #all_posts = Post.query.filter_by(OP_num=item.OP_num).delete()  # .all()
+                db.session.query(Post).filter(Post.OP_num == item.OP_num).delete()
+                #db.session.delete_all(all_posts)
                 db.session.commit()
         
         return redirect(url_for('thread_big', board=board, thread_num=p.id))
