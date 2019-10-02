@@ -52,6 +52,7 @@ class PostForm(FlaskForm):
     post = TextAreaField('Say something', validators=[DataRequired()])
     image = FileField('Put your image here')
     written_by_OP = BooleanField("OP's mark")
+    sage = BooleanField('SAGE')
     submit = SubmitField('Submit')
 
 
