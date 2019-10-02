@@ -2,9 +2,7 @@
  
 {% block content %}
     <script>
-
         let hover_object;
-
         function ChangeURLPicture(event, element)
         {
             abz = element;
@@ -20,8 +18,6 @@
             left: box.left + pageXOffset
                 };
         }
-
-
         function ref_over(event, element)
         {
             show_timer = setTimeout(ShowReply, 500, event, element)
@@ -41,11 +37,9 @@
             {
                 hover_object = event.target
                 clearTimeout(collapse_timer)
-
                 //Нужна проверка куда вернулись
                 let thread_div = document.getElementById('thread_div');
                 let all_replies = thread_div.getElementsByClassName("reply_post")
-
                 //удаление сиблингов
                 let temp = -1;
                 Array.from(all_replies).forEach((item, index, array) =>
@@ -59,7 +53,6 @@
                         item.remove()
                     }
                 });
-
             }
         }
         function ShowReply(event, element)
@@ -104,7 +97,6 @@
                   item.remove()
                 });
             }
-
         }
     </script>
 
@@ -185,9 +177,9 @@
         </p>
         <p>
             {{ form.post.label }}<br>
-            {% if guest_id == posts[0].guest_id %}
+            {% if guest == posts[0].guest_id %}
             {{ form.written_by_OP.label }}
-            {{ form.written_by_OP }}
+            {{ form.written_by_OP }}<br>
             {% endif %}
             {{ form.post(cols=32, rows=4) }}<br>
             {% for error in form.post.errors %}
