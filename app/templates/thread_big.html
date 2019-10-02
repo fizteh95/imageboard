@@ -36,6 +36,7 @@
             if (typeof collapse_timer !=="undefined")
             {
                 hover_object = event.target
+                //alert('hover left = ' + hover_object.style.left)
                 clearTimeout(collapse_timer)
                 //Нужна проверка куда вернулись
                 let thread_div = document.getElementById('thread_div');
@@ -44,12 +45,15 @@
                 let temp = -1;
                 Array.from(all_replies).forEach((item, index, array) =>
                 {
-                    if (item.id == hover_object.id)
+                    //костыль, надо будет переделать
+                    if ((item.id == hover_object.id)&&(item.style.left == hover_object.style.left))
                     {
+                        //alert('index = ' + index + ' ')
                         temp = index
                     }
                     if ((temp > -1)&&(index > temp))
                     {
+                        //alert('temp = ' + temp + ' index = ' + index + ' ')
                         item.remove()
                     }
                 });
