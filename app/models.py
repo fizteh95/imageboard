@@ -92,6 +92,7 @@ class Post(db.Model):
     board_name = db.Column(db.String(10), db.ForeignKey('board.ref'))
     answers = db.Column(db.String(100))
     guest_id = db.Column(db.String(120))
+    is_sage = db.Column(db.Integer)
     # или просто сериализируем
     #_ratings = Column(db.String, default='0.0')
     @property
