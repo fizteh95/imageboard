@@ -136,6 +136,9 @@
         {% if (post.id == post.OP_num) or (post.OP_flag == 1) %}
         <span style="color:#11ff00">#OP</span>
         {% endif %}
+        {% if (post.is_sage == 1) %}
+        <span style="color:#1100ff">#SAGE</span>
+        {% endif %}
         {{post.timestamp}}
         <p>
             {% if post.image_ref %}
