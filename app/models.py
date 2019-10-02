@@ -93,6 +93,7 @@ class Post(db.Model):
     answers = db.Column(db.String(100))
     guest_id = db.Column(db.String(120))
     is_sage = db.Column(db.Integer)
+    last_bump = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     # или просто сериализируем
     #_ratings = Column(db.String, default='0.0')
     @property
