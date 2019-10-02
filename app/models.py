@@ -91,7 +91,7 @@ class Post(db.Model):
     image_ref = db.Column(db.String(120))
     board_name = db.Column(db.String(10), db.ForeignKey('board.ref'))
     answers = db.Column(db.String(100))
-    # guest_id = db.Column(db.String(120))
+    guest_id = db.Column(db.String(120))
     # или просто сериализируем
     #_ratings = Column(db.String, default='0.0')
     @property
