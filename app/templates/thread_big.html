@@ -144,7 +144,7 @@
             {% if post.image_ref %}
                 <img src="/static/image_posts/thumb/{{post.image_ref}}" onclick="ChangeURLPicture(event, this)">
             {% endif %}
-            {{post.body|regex_replace}}
+            {{post.body|regex_replace|markdown}}
         </p>
         
 
