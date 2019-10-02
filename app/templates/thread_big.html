@@ -131,13 +131,13 @@
 
     <div style="position: relative;" id="thread_div">
     {% for post in posts %}
-        {% if (post.id == post.OP_num) or (OP_flag == 1) %}
+        {% if (post.id == post.OP_num) %}
         <div class="OP_post" id="post_num_{{post.id}}">
         {% else %}
         <div class="post" id="post_num_{{post.id}}">
         {% endif %}
         {{post.id}}
-        {% if post.id == post.OP_num %}
+        {% if (post.id == post.OP_num) or (post.OP_flag == 1) %}
         <span style="color:#11ff00">#OP</span>
         {% endif %}
         {{post.timestamp}}
@@ -185,6 +185,10 @@
         </p>
         <p>
             {{ form.post.label }}<br>
+            {% if guest_id == posts[0].guest_id %}
+            {{ form.written_by_OP.label }}
+            {{ form.written_by_OP }}
+            {% endif %}
             {{ form.post(cols=32, rows=4) }}<br>
             {% for error in form.post.errors %}
             <span style="color: red;">[{{ error }}]</span>
