@@ -184,6 +184,8 @@
             {% if guest == posts[0].guest_id %}
             {{ form.written_by_OP.label }}
             {{ form.written_by_OP }}<br>
+            {{ form.sage.label }}
+            {{ form.sage }}<br>
             {% endif %}
             {{ form.post(cols=32, rows=4) }}<br>
             {% for error in form.post.errors %}
