@@ -11,7 +11,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from flask import render_template
 from app import app, db
 from app.models import Board, Post, User
-from app.forms import PostForm, ThreadForm, LoginForm
+from app.forms import PostForm, ThreadForm, LoginForm, PostDelForm
 import os
 from PIL import Image
 import re
@@ -192,6 +192,11 @@ def thread_big(thread_num, board):
         session['user'] = os.urandom(24)
         session.permanent = True
 
+    form_del = PostDelForm()
+    if form.validate_on_submit():
+        # request.form.getlist('my_checkbox')
+        return redirect(url_for('thread_big', board=board, thread_num=thread_num)
+    
     form = PostForm()
     if form.validate_on_submit():
         if (not request.files['image']) and (not form.post.data):
