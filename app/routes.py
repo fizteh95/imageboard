@@ -1,10 +1,22 @@
 # from datetime import datetime
 from flask import render_template, flash, redirect, url_for, request, session
-# from flask_login import login_user, logout_user, current_user, login_required
+from flask_login import login_user, logout_user, current_user, login_required
 # from werkzeug.urls import url_parse
 # from app import app, db
 # from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm
 # from app.models import User, Post
+
+
+
+from flask import render_template
+from app import app, db
+from app.models import Board, Post, User
+from app.forms import PostForm, ThreadForm, LoginForm
+import os
+from PIL import Image
+import re
+import datetime
+
 
 
 # @app.before_request
@@ -51,28 +63,30 @@ from flask import render_template, flash, redirect, url_for, request, session
 #                            next_url=next_url, prev_url=prev_url)
 
 
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     if current_user.is_authenticated:
-#         return redirect(url_for('index'))
-#     form = LoginForm()
-#     if form.validate_on_submit():
-#         user = User.query.filter_by(username=form.username.data).first()
-#         if user is None or not user.check_password(form.password.data):
-#             flash('Invalid username or password')
-#             return redirect(url_for('login'))
-#         login_user(user, remember=form.remember_me.data)
-#         next_page = request.args.get('next')
-#         if not next_page or url_parse(next_page).netloc != '':
-#             next_page = url_for('index')
-#         return redirect(next_page)
-#     return render_template('login.html', title='Sign In', form=form)
+@app.route('/admin', methods=['GET', 'POST'])
+@app.route('/admin/', methods=['GET', 'POST'])
+def admin():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid username or password')
+            return redirect(url_for('admin'))
+        login_user(user, remember=form.remember_me.data)
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('index')
+        return redirect(next_page)
+    return render_template('login.html', title='Sign In', form=form)
 
 
-# @app.route('/logout')
-# def logout():
-#     logout_user()
-#     return redirect(url_for('index'))
+@app.route('/logout')
+@app.route('/logout/')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 
 # @app.route('/register', methods=['GET', 'POST'])
@@ -154,14 +168,7 @@ from flask import render_template, flash, redirect, url_for, request, session
 #     return redirect(url_for('user', username=username))
 
 
-from flask import render_template
-from app import app, db
-from app.models import Board, Post
-from app.forms import PostForm, ThreadForm
-import os
-from PIL import Image
-import re
-import datetime
+
 
 
 @app.route('/')
@@ -313,3 +320,11 @@ def board_b(board, page=1):
     #listmerge = (lambda x: [el for lst in x for el in lst])(new_posts)
 
     return render_template('board.html', threads=new_posts, form=form, board=board, page=page)
+
+
+@app.route('/admin_panel')
+@app.route('/admin_panel/')
+@login_required
+def admin_panel():
+    return ''' Surprise, yopta! '''
+
