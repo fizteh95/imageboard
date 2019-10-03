@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+    <script>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                alert( {{ message }} )
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </script>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>
