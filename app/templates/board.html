@@ -12,18 +12,34 @@
         {% endif %}
     {% endwith %}
 
-        {% for post in posts %}
-        {{post.id}}
-        {{post.timestamp}}
-        {% if post.id == post.OP_num %}
-        <a href="{{ url_for('thread_big', board=post.board_name, thread_num=post.id) }}"> reply</a>
-        {% endif %}
-        <p>{{post.body}}</p>
-        <br>
+        {% for thread in threads %}
+            {% for post in thread %}
+                {{post.id}}
+                {{post.timestamp}}
+                {% if post.id == post.OP_num %}
+                <a href="{{ url_for('thread_big', board=post.board_name, thread_num=post.id) }}"> reply</a>
+                {% endif %}
+                <p>{{post.body}}</p>
+                <br>
+            {% endfor %}
         {% endfor %}
+        <br>
+            <p>
+                <a href="{{ url_for('board_b', board=board, page=1) }}">1</a> 
+                <a href="{{ url_for('board_b', board=board, page=2) }}">2</a> 
+                <a href="{{ url_for('board_b', board=board, page=3) }}">3</a> 
+                <a href="{{ url_for('board_b', board=board, page=4) }}">4</a> 
+                <a href="{{ url_for('board_b', board=board, page=5) }}">5</a> 
+            </p>
+        <br>
+        <br>
 
-        <form action="" method="post">
+        <form action="" enctype="multipart/form-data" method="post">
             {{ form.hidden_tag() }}
+            <p>
+                {{ form.image.label }}<br>
+                {{ form.image(size=16) }}<br>
+            </p>
             <p>
                 {{ form.post.label }}<br>
                 {{ form.post(cols=32, rows=4) }}<br>
