@@ -95,6 +95,7 @@ class Post(db.Model):
     guest_id = db.Column(db.String(120))
     is_sage = db.Column(db.Integer)
     last_bump = db.Column(db.DateTime, index=True)
+    is_deleted = db.Column(db.Integer)
     # или просто сериализируем
     #_ratings = Column(db.String, default='0.0')
     @property
