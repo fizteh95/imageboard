@@ -194,7 +194,11 @@ def thread_big(thread_num, board):
 
     form_del = PostDelForm()
     if form.validate_on_submit():
-        # request.form.getlist('my_checkbox')
+        posts_to_del = request.form_del.getlist('del_checkbox')
+        for num in posts_to_del:
+            p_to_del = Post.query.filter_by(id=num).first()
+            p_to_del.is_deleted = 1
+        db.session.commit()
         return redirect(url_for('thread_big', board=board, thread_num=thread_num)
     
     form = PostForm()
@@ -246,8 +250,8 @@ def thread_big(thread_num, board):
 
         return redirect(url_for('thread_big', board=board, thread_num=thread_num, _anchor=("post_num_" + str(p.id))))
     thread = Post.query.filter_by(
-        OP_num=thread_num).order_by(Post.timestamp)
-    return render_template('thread_big.html', posts=thread, board=board, form=form, guest=session.get('user'))
+        OP_num=thread_num, is_deleted=0).order_by(Post.timestamp)
+    return render_template('thread_big.html', posts=thread, board=board, form=form, guest=session.get('user'), form_del=form_del)
 
 
 def sort_of_threads(list_of_threads):
@@ -314,11 +318,11 @@ def board_b(board, page=1):
     prev_url = url_for('index', page=posts.prev_num) \
         if posts.has_prev else None
     '''
-    OP_posts = Post.query.filter(Post.board_name == board, Post.id == Post.OP_num).order_by(Post.last_bump.desc()).paginate(page, 2, False) # 2 - кол-во тредов на страницу
+    OP_posts = Post.query.filter(Post.board_name == board, Post.id == Post.OP_num, Post.is_deleted == 0).order_by(Post.last_bump.desc()).paginate(page, 2, False) # 2 - кол-во тредов на страницу
     new_posts = []
     for OP in OP_posts.items:
         # изменить фильтр поиска op_flag
-        new_posts.append([OP] + Post.query.filter(Post.OP_num == OP.OP_num, Post.id != OP.OP_num).order_by(Post.timestamp)[-3:])
+        new_posts.append([OP] + Post.query.filter(Post.OP_num == OP.OP_num, Post.id != OP.OP_num, Post.is_deleted == 0).order_by(Post.timestamp)[-3:])
     new_posts.sort(key=sort_of_threads, reverse=True)
     # new_posts = new_posts
     # разворачивание списка
