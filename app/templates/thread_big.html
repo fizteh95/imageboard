@@ -193,7 +193,10 @@
 {% if current_user.is_authenticated %}
 <div>
     <form action="" method="post" novalidate>
-        <p>{{ form_del.submit() }}</p>
+        <p>
+            {{ form_del.submit.label }}
+            {{ form_del.submit() }}
+        </p>
     </form>
 </div>
 {% endif %}    
