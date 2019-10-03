@@ -82,7 +82,8 @@ def br2br(value):
     #    else:
     #        result += Markup('<a href="#post_num_' + str(arr[i]).split('>>')[-1] + '" class="inline_reply" onmouseenter="ref_over(event, this)" onmouseleave="ref_out()">' + arr[i] + '</a>')
     
-    result = value.replace('[i]', Markup('<i>'))
+    result = Markup.escape(value)
+    result = result.replace('[i]', Markup('<i>'))
     result = result.replace('[/i]', Markup('</i>'))
     result = result.replace('[b]', Markup('<b>'))
     result = result.replace('[/b]', Markup('</b>'))
