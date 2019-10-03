@@ -6,19 +6,19 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 # from flask_login import LoginManager
 from config import Config
-from flask_misaka import Misaka
+#from flask_misaka import Misaka
 
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-Misaka(app=app, escape    = True,
-                no_images = True,
-                wrap      = True,
-                autolink  = True,
-                no_intra_emphasis = True,
-                space_headers     = True)
+#Misaka(app=app, escape    = True,
+#                no_images = True,
+#                wrap      = True,
+#                autolink  = True,
+#                no_intra_emphasis = True,
+#                space_headers     = True)
 
 # login = LoginManager(app)
 # login.login_view = 'login'
@@ -71,3 +71,25 @@ def nl2br(value):
         else:
             result += Markup('<a href="#post_num_' + str(arr[i]).split('>>')[-1] + '" class="inline_reply" onmouseenter="ref_over(event, this)" onmouseleave="ref_out()">' + arr[i] + '</a>')
     return result
+
+@app.template_filter('simple_markup')
+def br2br(value):
+    #result = ''
+    #arr = _reply_re.split(value)
+    #for i in range(len(arr)):
+    #    if i % 2 == 0:
+    #        result += arr[i]
+    #    else:
+    #        result += Markup('<a href="#post_num_' + str(arr[i]).split('>>')[-1] + '" class="inline_reply" onmouseenter="ref_over(event, this)" onmouseleave="ref_out()">' + arr[i] + '</a>')
+    
+    result = value.replace('[i]', Markup('<i>'))
+    result = result.replace('[/i]', Markup('</i>'))
+    result = result.replace('[b]', Markup('<b>'))
+    result = result.replace('[/b]', Markup('</b>'))
+    result = result.replace('[u]', Markup('<u>'))
+    result = result.replace('[/u]', Markup('</u>'))
+    
+    return result
+
+
+
