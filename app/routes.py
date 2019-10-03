@@ -187,7 +187,7 @@ def thread_big(thread_num, board):
     form = PostForm()
     if form.validate_on_submit():
         if (not request.files['image']) and (not form.post.data):
-            flash(Pic or text required!)
+            flash("Pic or text required!")
             return render_template('thread_big.html', posts=thread, board=board, form=form, guest=session.get('user'))
         OP_flag = form.written_by_OP.data
         if OP_flag:
@@ -199,9 +199,9 @@ def thread_big(thread_num, board):
         db.session.commit()
         
         # Поднимаем тред
-        if (not form.sage.data) and (len(Post.query.filter_by(OP_num=thread_num)) < 50):
+        if (not form.sage.data) and (len(Post.query.filter_by(OP_num=thread_num).all()) < 50):
             OP_p = Post.query.filter_by(id=thread_num).first()
-            OP_p.last_bump = datetime.utcnow
+            OP_p.last_bump = datetime.datetime.utcnow()
             db.session.commit()
         else: #if (form.sage.data):
             p.is_sage = 1
@@ -237,7 +237,10 @@ def thread_big(thread_num, board):
 
 
 def sort_of_threads(list_of_threads):
-    return list_of_threads[0].last_bump
+    if (list_of_threads[0].last_bump):
+        return list_of_threads[0].last_bump
+    else:
+        return list_of_threads[-1].timestamp
 
 @app.route('/<board>', methods=['GET', 'POST'])
 def board_b(board):
@@ -252,7 +255,7 @@ def board_b(board):
     if form.validate_on_submit():
         
         if (not request.files['image']):
-            flash(Pic required!)
+            flash("Pic required!")
             return render_template('board.html', posts=listmerge, form=form)
         
         p = Post(body=form.post.data, OP_flag=1, board_name=board, guest_id=session.get('user'), last_bump=datetime.utcnow)
