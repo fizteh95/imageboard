@@ -83,8 +83,8 @@
             let thread_div = document.getElementById('thread_div');
             thread_div.appendChild(p_prime);
             //потом добавим условие на расположение, слева или справа
-            p_prime.style.left = event.pageX - 20
-            p_prime.style.top = event.pageY - 160
+            p_prime.style.left = event.pageX - getCoords(thread_div).left - 20
+            p_prime.style.top = event.pageY - getCoords(thread_div).top - 20
             p_prime.style.border = "1px solid black"
             p_prime.style.background = "#cecece"
             p_prime.style.borderRadius = "7px"
