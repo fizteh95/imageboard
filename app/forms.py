@@ -64,4 +64,4 @@ class ThreadForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class PostDelForm(FlaskForm):
-    submit = SubmitField('Submit deleting')
+    submit_del = SubmitField('Submit deleting')

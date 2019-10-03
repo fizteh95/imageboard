@@ -193,16 +193,30 @@ def thread_big(thread_num, board):
         session.permanent = True
 
     form_del = PostDelForm()
-    if form.validate_on_submit():
-        posts_to_del = request.form_del.getlist('del_checkbox')
+    form = PostForm()
+
+
+    if form_del.validate_on_submit() and : #"submit_del" in request.form and 
+    #if form_del.validate_on_submit():
+        print(request.form)
+        print(form.submit)
+        print(form_del.submit_del)
+        
+        # print((form_del.submit.label))
+        # print((form_del.submit.name))
+        # print((form_del.submit.name))
+
+        print('nooo')
+        posts_to_del = request.form.getlist('del_checkbox')
         for num in posts_to_del:
             p_to_del = Post.query.filter_by(id=num).first()
             p_to_del.is_deleted = 1
         db.session.commit()
-        return redirect(url_for('thread_big', board=board, thread_num=thread_num)
+        return redirect(url_for('thread_big', board=board, thread_num=thread_num))
     
-    form = PostForm()
-    if form.validate_on_submit():
+    
+    if "submit_post" in request.form and form.validate_on_submit():
+        print('ha')
         if (not request.files['image']) and (not form.post.data):
             flash("Pic or text required!")
             thread = Post.query.filter_by(OP_num=thread_num).order_by(Post.timestamp)
@@ -212,7 +226,7 @@ def thread_big(thread_num, board):
             OP_flag = 1
         else:
             OP_flag = 0
-        p = Post(body=form.post.data, OP_flag=OP_flag, OP_num=thread_num, board_name=board, guest_id=session.get('user'), is_sage=0)
+        p = Post(body=form.post.data, OP_flag=OP_flag, OP_num=thread_num, board_name=board, guest_id=session.get('user'), is_sage=0, is_deleted=0)
         db.session.add(p)
         db.session.commit()
         
