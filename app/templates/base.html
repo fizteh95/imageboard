@@ -1,6 +1,12 @@
 <html>
     <head>
         <h1>2ch</h1>
+        <br>
+        {% if current_user.is_authenticated %}
+	    <a href="{{ url_for('logout') }}">Logout</a>
+	    <br>
+	    <br>
+	    {% endif %}
     </head>
     <body>
         {% block content %}{% endblock %}
