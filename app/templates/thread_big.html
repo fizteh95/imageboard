@@ -1,6 +1,7 @@
 {% extends "base.html" %}
  
 {% block content %}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     <script>
         let hover_object;
         function ChangeURLPicture(event, element)
@@ -206,6 +207,7 @@
             {% endfor %}
         </p>
         <p>{{ form.submit() }}</p>
+        <div class="g-recaptcha" data-sitekey="123"></div>
     </form>
 </div>
 {% endblock %}
