@@ -151,6 +151,9 @@
         <span style="color:#1100ff">#SAGE</span>
         {% endif %}
         {{post.timestamp}}
+        {% if current_user.is_authenticated %}
+        <input type="checkbox" value={{post.id}} name='del_checkbox'>
+        {% endif %}
         <p>
             {% if post.image_ref %}
                 <img src="/static/image_posts/thumb/{{post.image_ref}}" onclick="ChangeURLPicture(event, this)">
@@ -185,7 +188,15 @@
         <br>
     {% endfor %}
     </div>
-    
+
+
+{% if current_user.is_authenticated %}
+<div>
+    <form action="" method="post" novalidate>
+        <p>{{ form_del.submit() }}</p>
+    </form>
+</div>
+{% endif %}    
 <div>
     <form action="" enctype="multipart/form-data" method="post" novalidate>
         {{ form.hidden_tag() }}
