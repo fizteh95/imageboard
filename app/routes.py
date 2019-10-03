@@ -186,6 +186,9 @@ def thread_big(thread_num, board):
 
     form = PostForm()
     if form.validate_on_submit():
+        if (not request.files['image']) and (not form.post.data):
+            flash(Pic or text required!)
+            return render_template('thread_big.html', posts=thread, board=board, form=form, guest=session.get('user'))
         OP_flag = form.written_by_OP.data
         if OP_flag:
             OP_flag = 1
@@ -247,6 +250,11 @@ def board_b(board):
 
     form = ThreadForm()
     if form.validate_on_submit():
+        
+        if (not request.files['image']):
+            flash(Pic required!)
+            return render_template('board.html', posts=listmerge, form=form)
+        
         p = Post(body=form.post.data, OP_flag=1, board_name=board, guest_id=session.get('user'), last_bump=datetime.utcnow)
         db.session.add(p)
         db.session.commit()
