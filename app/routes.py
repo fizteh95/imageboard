@@ -176,6 +176,7 @@ def index():
 
 
 @app.route('/<board>/res/<thread_num>', methods=['GET', 'POST'])
+@app.route('/<board>/res/<thread_num>/', methods=['GET', 'POST'])
 def thread_big(thread_num, board):
 
     if 'user' in session:
@@ -188,6 +189,7 @@ def thread_big(thread_num, board):
     if form.validate_on_submit():
         if (not request.files['image']) and (not form.post.data):
             flash("Pic or text required!")
+            thread = Post.query.filter_by(OP_num=thread_num).order_by(Post.timestamp)
             return render_template('thread_big.html', posts=thread, board=board, form=form, guest=session.get('user'))
         OP_flag = form.written_by_OP.data
         if OP_flag:
@@ -243,7 +245,10 @@ def sort_of_threads(list_of_threads):
         return list_of_threads[-1].timestamp
 
 @app.route('/<board>', methods=['GET', 'POST'])
-def board_b(board):
+@app.route('/<board>/', methods=['GET', 'POST'])
+@app.route('/<board>/<int:page>', methods = ['GET', 'POST'])
+@app.route('/<board>/<int:page>/', methods = ['GET', 'POST'])
+def board_b(board, page=1):
 
     if 'user' in session:
         pass
@@ -254,11 +259,21 @@ def board_b(board):
     form = ThreadForm()
     if form.validate_on_submit():
         
-        if (not request.files['image']):
+        if (not form.post.data):  # request.files['image']
             flash("Pic required!")
+
+            OP_posts = Post.query.filter(Post.board_name == board, Post.id == Post.OP_num).order_by(Post.timestamp)
+            new_posts = []
+            for OP in OP_posts:
+                # изменить фильтр поиска op_flag
+                new_posts.append([OP] + Post.query.filter(Post.OP_num == OP.OP_num, Post.id != OP.OP_num).order_by(Post.timestamp)[-3:])
+            new_posts.sort(key=sort_of_threads, reverse=True)
+            # разворачивание списка
+            listmerge = (lambda x: [el for lst in x for el in lst])(new_posts)
+
             return render_template('board.html', posts=listmerge, form=form)
         
-        p = Post(body=form.post.data, OP_flag=1, board_name=board, guest_id=session.get('user'), last_bump=datetime.utcnow)
+        p = Post(body=form.post.data, OP_flag=1, board_name=board, guest_id=session.get('user'), last_bump=datetime.datetime.utcnow())
         db.session.add(p)
         db.session.commit()
         # надо записывать айди оп поста в сам оп пост
@@ -278,13 +293,23 @@ def board_b(board):
         return redirect(url_for('thread_big', board=board, thread_num=p.id))
     
     # условие равенства айди и номера оп-поста
-    OP_posts = Post.query.filter(Post.board_name == board, Post.id == Post.OP_num).order_by(Post.timestamp)
+    # page = request.args.get('page', 1, type=int)
+    '''
+    .paginate(
+        page, app.config['POSTS_PER_PAGE'], False)
+    next_url = url_for('index', page=posts.next_num) \
+        if posts.has_next else None
+    prev_url = url_for('index', page=posts.prev_num) \
+        if posts.has_prev else None
+    '''
+    OP_posts = Post.query.filter(Post.board_name == board, Post.id == Post.OP_num).order_by(Post.last_bump.desc()).paginate(page, 2, False) # 2 - кол-во тредов на страницу
     new_posts = []
-    for OP in OP_posts:
+    for OP in OP_posts.items:
         # изменить фильтр поиска op_flag
         new_posts.append([OP] + Post.query.filter(Post.OP_num == OP.OP_num, Post.id != OP.OP_num).order_by(Post.timestamp)[-3:])
     new_posts.sort(key=sort_of_threads, reverse=True)
+    # new_posts = new_posts
     # разворачивание списка
-    listmerge = (lambda x: [el for lst in x for el in lst])(new_posts)
+    #listmerge = (lambda x: [el for lst in x for el in lst])(new_posts)
 
-    return render_template('board.html', posts=listmerge, form=form)
+    return render_template('board.html', threads=new_posts, form=form, board=board, page=page)
