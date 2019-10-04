@@ -103,6 +103,35 @@
                 });
             }
         }
+
+        //document.getElementById('submit_hidden').value = {}
+        let posts_to_del = []
+
+        function checkFluency(event, element)
+        {
+            let sub_del = document.getElementById('submit_hidden');
+            if(element.checked == true)
+            {
+                posts_to_del.push(element.value)
+                sub_del.value = String(posts_to_del)
+                //alert(sub_del.value)
+            }
+            else
+            {
+                posts_to_del.splice(posts_to_del.indexOf(element.value), 1)
+                sub_del.value = String(posts_to_del)
+                //alert(sub_del.value)
+            }
+            let all_checkboxes = document.getElementsByClassName("del_checkbox")
+            //alert(all_checkboxes)
+            Array.from(all_checkboxes).forEach((item, index, array) =>
+            {
+                if (item.value == element.value)
+                {
+                    item.checked = element.checked
+                }
+            });
+        }
     </script>
 
     <style>
@@ -152,7 +181,7 @@
         {% endif %}
         {{post.timestamp}}
         {% if current_user.is_authenticated %}
-        <input type="checkbox" value={{post.id}} name='del_checkbox'>
+        <input class="del_checkbox" type="checkbox" value={{post.id}} name='del_checkbox' onclick="checkFluency(event, this)">
         {% endif %}
         <p>
             {% if post.image_ref %}
@@ -196,7 +225,8 @@
         {{ form_del.hidden_tag() }}
         <p>
             {{ form_del.submit_del.label }}
-            {{ form_del.submit() }}
+            {{ form_del_submit_hidden }}
+            {{ form_del.submit_del() }}
         </p>
     </form>
 </div>
