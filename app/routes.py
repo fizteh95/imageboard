@@ -196,18 +196,10 @@ def thread_big(thread_num, board):
     form = PostForm()
 
 
-    if form_del.validate_on_submit() and : #"submit_del" in request.form and 
-    #if form_del.validate_on_submit():
-        print(request.form)
-        print(form.submit)
-        print(form_del.submit_del)
-        
-        # print((form_del.submit.label))
-        # print((form_del.submit.name))
-        # print((form_del.submit.name))
-
-        print('nooo')
+    if form_del.validate_on_submit() and (len(request.form.getlist('submit_del')) > 0):
         posts_to_del = request.form.getlist('del_checkbox')
+        posts_to_del = (request.form.getlist('submit_hidden'))[0].split(',')
+        print(form_del.submit_del)
         for num in posts_to_del:
             p_to_del = Post.query.filter_by(id=num).first()
             p_to_del.is_deleted = 1
@@ -215,7 +207,7 @@ def thread_big(thread_num, board):
         return redirect(url_for('thread_big', board=board, thread_num=thread_num))
     
     
-    if "submit_post" in request.form and form.validate_on_submit():
+    if form.validate_on_submit() and (len(request.form.getlist('submit')) > 0):
         print('ha')
         if (not request.files['image']) and (not form.post.data):
             flash("Pic or text required!")
@@ -264,7 +256,7 @@ def thread_big(thread_num, board):
 
         return redirect(url_for('thread_big', board=board, thread_num=thread_num, _anchor=("post_num_" + str(p.id))))
     thread = Post.query.filter_by(
-        OP_num=thread_num, is_deleted=0).order_by(Post.timestamp)
+        OP_num=thread_num, is_deleted=0).order_by(Post.timestamp)  # , is_deleted=0
     return render_template('thread_big.html', posts=thread, board=board, form=form, guest=session.get('user'), form_del=form_del)
 
 
