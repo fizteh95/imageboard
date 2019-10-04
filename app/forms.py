@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf import RecaptchaField
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
-    TextAreaField, FileField
+    TextAreaField, FileField, HiddenField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
     Length
 # from app.models import User
@@ -61,7 +61,8 @@ class PostForm(FlaskForm):
 class ThreadForm(FlaskForm):
     post = TextAreaField('Say something', validators=[DataRequired()])
     image = FileField('Put your image here')
-    submit = SubmitField('Submit')
+    submit = SubmitField('Submit', _name='posttt')
 
 class PostDelForm(FlaskForm):
-    submit_del = SubmitField('Submit deleting')
+    submit_del = SubmitField('Submit deleting', _name='delll')
+    submit_hidden = HiddenField('Hidden list of posts')
