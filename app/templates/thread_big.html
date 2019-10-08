@@ -136,6 +136,7 @@
 
     <style>
        .post {
+            margin: 4px 0 4px 0px;
             border: 1px solid #d2d2d2;
             background: #dddddd;
             border-radius: 7px;
@@ -147,6 +148,10 @@
             padding: 10px;
             display: inline-block;
             margin-top: 5px;
+        }
+        .post_details {
+            font-size: 0.9em;
+            color: #5d5d5d;
         }
     </style>
 
@@ -167,52 +172,54 @@
 
     <div style="position: relative;" id="thread_div">
     {% for post in posts %}
+        
         {% if (post.id == post.OP_num) %}
         <div class="OP_post" id="post_num_{{post.id}}">
         {% else %}
         <div class="post" id="post_num_{{post.id}}">
         {% endif %}
-        {{post.id}}
-        {% if (post.id == post.OP_num) or (post.OP_flag == 1) %}
-        <span style="color:#11ff00">#OP</span>
-        {% endif %}
-        {% if (post.is_sage == 1) %}
-        <span style="color:#1100ff">#SAGE</span>
-        {% endif %}
-        {{post.timestamp}}
-        {% if current_user.is_authenticated %}
-        <input class="del_checkbox" type="checkbox" value={{post.id}} name='del_checkbox' onclick="checkFluency(event, this)">
-        {% endif %}
-        <p>
-            {% if post.image_ref %}
-                <img src="/static/image_posts/thumb/{{post.image_ref}}" onclick="ChangeURLPicture(event, this)">
-            {% endif %}
-            {{post.body|regex_replace|simple_markup}}
-        </p>
-        
-
-        
-        {% if (post._answers|count) > 1 %}
+            <div class="post_details">
+                <span>Anonymus</span>
+                {% if (post.id == post.OP_num) or (post.OP_flag == 1) %}
+                <span style="color:#11ff00">#OP</span>
+                {% endif %}
+                <span>{{post.timestamp.strftime("%d/%m/%y %a %H:%M:%S")}}</span>
+                <span style="color:black;">#{{post.id}}</span>
+                {% if (post.is_sage == 1) %}
+                <span style="color:#1100ff">#SAGE</span>
+                {% endif %}
+                
+                {% if current_user.is_authenticated %}
+                <input class="del_checkbox" type="checkbox" value={{post.id}} name='del_checkbox' onclick="checkFluency(event, this)">
+                {% endif %}
+            </div>
             <p>
-            <i>
-                {% for i in range((post._answers)|length) %}
-                    {% if i != 0 %}, {% endif %}<a href="#post_num_{{ post._answers[i] }}" onmouseenter="ref_over(event, this)" onmouseleave="ref_out()" class="low_answer">{{ post._answers[i] }}</a>
-                {% endfor %}
-            </i>
+                {% if post.image_ref %}
+                    <img src="/static/image_posts/thumb/{{post.image_ref}}" onclick="ChangeURLPicture(event, this)">
+                {% endif %}
+                {{post.body|regex_replace|simple_markup}}
             </p>
-        {% endif %}
-
-        {% if (post._answers|length) == 1 %}
-            <p>
-            <i>
-                <a href="#post_num_{{ post._answers[0] }}" onmouseenter="ref_over(event, this)" onmouseleave="ref_out()" class="low_answer">{{ post._answers[0] }}</a>
-            </i>
-            </p>
-        {% endif %}
-        
-        
-        
             
+
+            
+            {% if (post._answers|count) > 1 %}
+                <p>
+                <i>
+                    {% for i in range((post._answers)|length) %}
+                        {% if i != 0 %}, {% endif %}<a href="#post_num_{{ post._answers[i] }}" onmouseenter="ref_over(event, this)" onmouseleave="ref_out()" class="low_answer">{{ post._answers[i] }}</a>
+                    {% endfor %}
+                </i>
+                </p>
+            {% endif %}
+
+            {% if (post._answers|length) == 1 %}
+                <p>
+                <i>
+                    <a href="#post_num_{{ post._answers[0] }}" onmouseenter="ref_over(event, this)" onmouseleave="ref_out()" class="low_answer">{{ post._answers[0] }}</a>
+                </i>
+                </p>
+            {% endif %}
+        
         </div>
         <br>
     {% endfor %}
