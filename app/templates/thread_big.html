@@ -171,8 +171,9 @@
 
 
     <div style="position: relative;" id="thread_div">
+    {% set number = 0 %}
     {% for post in posts %}
-        
+        {% set number = number + 1 %}
         {% if (post.id == post.OP_num) %}
         <div class="OP_post" id="post_num_{{post.id}}">
         {% else %}
@@ -185,6 +186,7 @@
                 {% endif %}
                 <span>{{post.timestamp.strftime("%d/%m/%y %a %H:%M:%S")}}</span>
                 <span style="color:black;">#{{post.id}}</span>
+                <span>{{number}}</span>
                 {% if (post.is_sage == 1) %}
                 <span style="color:#1100ff">#SAGE</span>
                 {% endif %}
