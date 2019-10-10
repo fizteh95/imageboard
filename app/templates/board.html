@@ -22,13 +22,7 @@
 
         {% for thread in threads %}
             {% for post in thread %}
-                {{post.id}}
-                {{post.timestamp}}
-                {% if post.id == post.OP_num %}
-                <a href="{{ url_for('thread_big', board=post.board_name, thread_num=post.id) }}"> reply</a>
-                {% endif %}
-                <p>{{post.body}}</p>
-                <br>
+                {% include _post.html %}
             {% endfor %}
         {% endfor %}
         <br>
