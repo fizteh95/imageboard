@@ -177,52 +177,7 @@
 
     <div style="position: relative;" id="thread_div">
     {% for post in posts %}
-        {% if (post.id == post.OP_num) %}
-        <div class="OP_post" id="post_num_{{post.id}}">
-        {% else %}
-        <div class="post" id="post_num_{{post.id}}">
-        {% endif %}
-            <div class="post_details">
-                <span>Anonymus</span>
-                {% if (post.id == post.OP_num) or (post.OP_flag == 1) %}
-                <span style="color:#11ff00">#OP</span>
-                {% endif %}
-                <span>{{post.timestamp.strftime("%d/%m/%y %a %H:%M:%S")}}</span>
-                <span style="color:black;">#{{post.id}}</span>
-                <span>{{loop.index}}</span>
-                {% if (post.is_sage == 1) %}
-                <span style="color:#1100ff">#SAGE</span>
-                {% endif %}
-                
-                {% if current_user.is_authenticated %}
-                <input class="del_checkbox" type="checkbox" value={{post.id}} name='del_checkbox' onclick="checkFluency(event, this)">
-                {% endif %}
-            </div>
-            <div style="margin-bottom:17px;margin-left:17px;margin-right:17px;margin-top:17px;">
-                <p>
-                    {% if post.image_ref %}
-                        <img src="/static/image_posts/thumb/{{post.image_ref}}" onclick="ChangeURLPicture(event, this)">
-                    {% endif %}
-                    {{post.body|regex_replace|simple_markup}}
-                </p>
-            </div>
-            <div style="padding-left: 17px;">  
-                {% if (post._answers|count) > 1 %}
-                    <p style="font-size: 80%;">
-                        {% for i in range((post._answers)|length) %}
-                            {% if i != 0 %} {% endif %}<a href="#post_num_{{ post._answers[i] }}" onmouseenter="ref_over(event, this)" onmouseleave="ref_out()" class="low_answer">>>{{ post._answers[i] }}</a>
-                        {% endfor %}
-                    </p>
-                {% endif %}
-
-                {% if (post._answers|length) == 1 %}
-                    <p style="font-size: 80%;">
-                        <a href="#post_num_{{ post._answers[0] }}" onmouseenter="ref_over(event, this)" onmouseleave="ref_out()" class="low_answer">>>{{ post._answers[0] }}</a>
-                    </p>
-                {% endif %}
-            </div>
-        </div>
-        <br>
+        {% include _post.html %}
     {% endfor %}
     </div>
 
