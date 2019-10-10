@@ -22,8 +22,12 @@
 
         {% for thread in threads %}
             {% for post in thread %}
-                {% include _post.html %}
+                {% with %}
+                    {% set loop_index = loop.index %}
+                    {% include '_post.html' %}
+                {% endwith %}
             {% endfor %}
+            <hr>
         {% endfor %}
         <br>
             <p>

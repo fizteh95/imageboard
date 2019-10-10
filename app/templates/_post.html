@@ -10,11 +10,11 @@
                 {% endif %}
                 <span>{{post.timestamp.strftime("%d/%m/%y %a %H:%M:%S")}}</span>
                 <span style="color:black;">#{{post.id}}</span>
-                <span>{{loop.index}}</span>
+                
                 {% if (post.is_sage == 1) %}
                 <span style="color:#1100ff">#SAGE</span>
                 {% endif %}
-                
+                <span>{{loop_index}}</span>
                 {% if current_user.is_authenticated %}
                 <input class="del_checkbox" type="checkbox" value={{post.id}} name='del_checkbox' onclick="checkFluency(event, this)">
                 {% endif %}
@@ -22,11 +22,11 @@
             <div style="margin-bottom:17px;margin-left:17px;margin-right:17px;margin-top:17px;">
                 <p>
                     {% if post.image_ref %}
-                        <div style="float:left;">
+                        <div>
                         <img src="/static/image_posts/thumb/{{post.image_ref}}" onclick="ChangeURLPicture(event, this)">
                         </div>
                     {% endif %}
-                    <div style="float:left;">
+                    <div>
                     {{post.body|regex_replace|simple_markup}}
                     </div>
                 </p>
@@ -48,3 +48,4 @@
             </div>
         </div>
         <br>
+        
