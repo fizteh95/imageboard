@@ -22,9 +22,13 @@
             <div style="margin-bottom:17px;margin-left:17px;margin-right:17px;margin-top:17px;">
                 <p>
                     {% if post.image_ref %}
+                        <div style="float:left;">
                         <img src="/static/image_posts/thumb/{{post.image_ref}}" onclick="ChangeURLPicture(event, this)">
+                        </div>
                     {% endif %}
+                    <div style="float:left;">
                     {{post.body|regex_replace|simple_markup}}
+                    </div>
                 </p>
             </div>
             <div style="padding-left: 17px;">  
