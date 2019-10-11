@@ -80,13 +80,18 @@
             let id_post = ''
             if (element.classList.contains('low_answer'))
             {
-                id_post = 'post_num_' + element.innerHTML
+                id_post = 'post_num_' + element.innerHTML.split("&gt;&gt;")[1]
+                //alert(element.innerHTML)
+                //alert(id_post)
             }
             else if (element.classList.contains('inline_reply'))
             {
+                //alert('no')
                 id_post = 'post_num_' + element.innerHTML.split("&gt;&gt;")[1]
             }
+            //alert('ha')
             let p = document.getElementById(id_post);
+            //alert(id_post)
             let p_prime = p.cloneNode(true);
             let p_prime_id = p_prime.id + '_show'
             p_prime.id = p_prime_id

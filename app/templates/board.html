@@ -24,6 +24,7 @@
             {% for post in thread %}
                 {% with %}
                     {% set loop_index = loop.index %}
+                    {% set board_post = 1 %}
                     {% include '_post.html' %}
                 {% endwith %}
             {% endfor %}
