@@ -19,17 +19,19 @@
                 <input class="del_checkbox" type="checkbox" value={{post.id}} name='del_checkbox' onclick="checkFluency(event, this)">
                 {% endif %}
             </div>
+            <!--<div class="image_body_wrap">-->
             <div style="margin-bottom:17px;margin-left:17px;margin-right:17px;margin-top:17px;">
                 <p>
                     {% if post.image_ref %}
-                        <div>
+                        <div style="display:inline-block;">
                         <img src="/static/image_posts/thumb/{{post.image_ref}}" onclick="ChangeURLPicture(event, this)">
                         </div>
                     {% endif %}
-                    <div>
+                    <div style="display:inline-block;">
                     {{post.body|regex_replace|simple_markup}}
                     </div>
                 </p>
+            <!--</div>-->
             </div>
             <div style="padding-left: 17px;">  
                 {% if (post._answers|count) > 1 %}
