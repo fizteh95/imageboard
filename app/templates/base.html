@@ -183,7 +183,7 @@
 
 
     <head>
-        <h1>2ch</h1>
+        <h1 align="center"><a href="{{ url_for('index') }}" style="color: black;">Flask - imageboard</a></h1>
         <br>
         {% if current_user.is_authenticated %}
 	    <a href="{{ url_for('logout') }}">Logout</a>
@@ -193,5 +193,6 @@
     </head>
     <body bgcolor="#eeeeeee">
         {% block content %}{% endblock %}
+        <br>
   </body>
 </html>

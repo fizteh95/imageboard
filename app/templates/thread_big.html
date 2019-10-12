@@ -12,7 +12,7 @@
         {% endif %}
     {% endwith %}
 
-    <h2><a href="{{ url_for('board_b', board=board) }}">/{{board}}</a></h2>
+    <h2 align="center"><a href="{{ url_for('board_b', board=board) }}">/{{board}}</a></h2>
     <br>
     <br>
 
@@ -27,7 +27,7 @@
     {% endfor %}
     </div>
 
-
+<br>
 {% if current_user.is_authenticated %}
 <div>
     <form name="submit_del" action="" method="post" value="del" novalidate>
@@ -40,27 +40,28 @@
     </form>
 </div>
 {% endif %}    
-<div>
+<div style="display: flex; justify-content: center;">
     <form name="submit_post" action="" enctype="multipart/form-data" method="post" novalidate>
         {{ form.hidden_tag() }}
-        <p>
+        <div>
             {{ form.image.label }}<br>
             {{ form.image(size=16) }}<br>
-        </p>
-        <p>
-            {{ form.post.label }}<br>
+        </div>
+        <br>
+        <div>
             {% if guest == posts[0].guest_id %}
-            {{ form.written_by_OP.label }}
-            {{ form.written_by_OP }}<br>
-            {{ form.sage.label }}
-            {{ form.sage }}<br>
+                {{ form.written_by_OP.label }}
+                {{ form.written_by_OP }}<br>
+                {{ form.sage.label }}
+                {{ form.sage }}<br>
             {% endif %}
+            {{ form.post.label }}<br>
             {{ form.post(cols=32, rows=4) }}<br>
             {% for error in form.post.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
+            {{ form.submit() }}
+        </div>
         <div class="g-recaptcha" data-sitekey="123"></div>
     </form>
 </div>

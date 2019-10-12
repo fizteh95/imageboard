@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div align="center">
+    <img src="/static/banner.jpg">
+</div>
+<div align="center">
 <h1>Our boards:</h1>
     <br>
     {% for board in boards %}
@@ -9,4 +13,5 @@
     </div>
     <br>
     {% endfor %}
+</div>
 {% endblock %}

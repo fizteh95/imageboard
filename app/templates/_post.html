@@ -14,7 +14,9 @@
                 {% if (post.is_sage == 1) %}
                 <span style="color:#e41b1b">#SAGE</span>
                 {% endif %}
+                {% if board_post == 0 %}
                 <span>{{loop_index}}</span>
+                {% endif %}
                 {% if current_user.is_authenticated %}
                 <input class="del_checkbox" type="checkbox" value={{post.id}} name='del_checkbox' onclick="checkFluency(event, this)">
                 {% endif %}
@@ -25,11 +27,11 @@
             <div class="image_body_wrap" style="overflow: hidden;">
                 <div style="margin-bottom:17px;margin-left:17px;margin-right:17px;margin-top:17px;">
                     {% if post.image_ref %}
-                        <div style="float:left; margin-bottom: 10px">
+                        <div style="float:left; margin-bottom: 10px; margin-right: 10px;">
                             <img src="/static/image_posts/thumb/{{post.image_ref}}" onclick="ChangeURLPicture(event, this)">
                         </div>
                     {% endif %}
-                    <div style="overflow:auto; padding-left:10px;">
+                    <div style="overflow:auto;">
                     {{post.body|regex_replace|simple_markup}}
                     </div>
                 </div>

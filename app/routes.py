@@ -200,10 +200,12 @@ def thread_big(thread_num, board):
         posts_to_del = request.form.getlist('del_checkbox')
         posts_to_del = (request.form.getlist('submit_hidden'))[0].split(',')
         print(form_del.submit_del)
-        for num in posts_to_del:
-            p_to_del = Post.query.filter_by(id=num).first()
-            p_to_del.is_deleted = 1
-        db.session.commit()
+        print(posts_to_del)
+        if posts_to_del != ['']:
+            for num in posts_to_del:
+                p_to_del = Post.query.filter_by(id=num).first()
+                p_to_del.is_deleted = 1
+            db.session.commit()
         return redirect(url_for('thread_big', board=board, thread_num=thread_num))
     
     
