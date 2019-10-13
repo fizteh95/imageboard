@@ -59,7 +59,7 @@ class PostForm(FlaskForm):
 
 
 class ThreadForm(FlaskForm):
-    post = TextAreaField('Say something', validators=[DataRequired()])
+    post = TextAreaField('Say something')
     image = FileField('Put your image here')
     submit = SubmitField('Submit', _name='posttt')
 

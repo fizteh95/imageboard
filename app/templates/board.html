@@ -5,18 +5,40 @@
         function ready() 
         {
             alert('DOM готов');
-            let submit_but;
-            submit_but = document.getElementById('submit_board');
-            submit_but.addEventListener('onsubmit', submit_click)
+            // let submit_but;
+            // submit_but = document.getElementById('submit_board');
+            // submit_but.addEventListener('onsubmit', submit_click)
         }
         document.addEventListener("DOMContentLoaded", ready);
         function submit_click()
         {
-            alert('hey');
-            alert(event.target.post.value);
-            alert(event.target.image.value);
-            //event.target.submit();
+
+            // if (event.target.post.value != '')
+            // {
+            //     event.target.submit();
+            // }
+            if (event.target.image.value != '')
+            {
+                event.target.submit();
+            }
+
+            alert('Pic required.')
             return false;
+
+            // else if ()
+            // {
+
+            // }
+            // else
+            // {
+
+            // }
+
+            // alert('hey');
+            // alert(event.target.post.value);
+            // alert(event.target.image.value);
+            //event.target.submit();
+            // return false;
         }
     // {% with messages = get_flashed_messages() %}
     //     {% if messages %}

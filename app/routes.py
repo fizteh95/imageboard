@@ -283,9 +283,10 @@ def board_b(board, page=1):
     form = ThreadForm()
     if form.validate_on_submit():
         
-        if (not form.post.data):  # request.files['image']
+        print('thread')
+        if (not request.files['image']) and (not form.post.data):
             flash("Pic required!")
-
+            print('nooo')
             OP_posts = Post.query.filter(Post.board_name == board, Post.id == Post.OP_num).order_by(Post.timestamp)
             new_posts = []
             for OP in OP_posts:
@@ -296,14 +297,50 @@ def board_b(board, page=1):
             listmerge = (lambda x: [el for lst in x for el in lst])(new_posts)
 
             return render_template('board.html', posts=listmerge, form=form)
-        
-        p = Post(body=form.post.data, OP_flag=1, board_name=board, guest_id=session.get('user'), last_bump=datetime.datetime.utcnow())
+
+        OP_flag = 1
+
+        p = Post(body=form.post.data, OP_flag=1, board_name=board, guest_id=session.get('user'), last_bump=datetime.datetime.utcnow(), is_sage=0, is_deleted=0)
+        #p = Post(body=form.post.data, OP_flag=1, OP_num=thread_num, board_name=board, guest_id=session.get('user'), is_sage=0, is_deleted=0)
         db.session.add(p)
         db.session.commit()
+
         # надо записывать айди оп поста в сам оп пост
         p.OP_num = p.id
         db.session.commit()
         
+        # Поднимаем тред
+        # if (not form.sage.data) and (len(Post.query.filter_by(OP_num=thread_num).all()) < 50):
+        #     OP_p = Post.query.filter_by(id=thread_num).first()
+        #     OP_p.last_bump = datetime.datetime.utcnow()
+        #     db.session.commit()
+        # else: #if (form.sage.data):
+        #     p.is_sage = 1
+        #     db.session.commit()
+
+        file = request.files['image']
+        # if file and allowed_file(file.filename):
+        #     filename = secure_filename(file.filename)
+        #     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        # TODO сделать проверки на тип и название и размер
+        if file:
+            filename = str(str(p.id) + '.' + file.filename.split('.')[-1])
+            file.save(os.path.join("C:\\2ch\\imageboard\\app\\static\\image_posts", filename))
+            image = Image.open(file)
+            image.thumbnail((120, 120), Image.ANTIALIAS)
+            image.save(os.path.join("C:\\2ch\\imageboard\\app\\static\\image_posts\\thumb", filename))  # , 'JPEG'
+
+            p.image_ref = filename
+            db.session.commit()
+
+        reply = re.findall(r'>>\d+', p.body)
+        for i in range(len(reply)):
+            num = reply[i].split('>>')[-1]
+            post_to_reply = Post.query.filter_by(id=num).first()
+            if post_to_reply:
+                post_to_reply._answers += [p.id]
+                db.session.commit()
+        print(p)
         # удаляем уплывшие треды
         list_of_threads = Post.query.filter(Post.board_name == board, Post.OP_num == Post.id).all()       
         ext_threads = list_of_threads[20:]
@@ -313,6 +350,38 @@ def board_b(board, page=1):
                 db.session.query(Post).filter(Post.OP_num == item.OP_num).delete()
                 #db.session.delete_all(all_posts)
                 db.session.commit()
+
+
+        # if (not form.post.data):  # request.files['image']
+        #     flash("Pic required!")
+
+        #     OP_posts = Post.query.filter(Post.board_name == board, Post.id == Post.OP_num).order_by(Post.timestamp)
+        #     new_posts = []
+        #     for OP in OP_posts:
+        #         # изменить фильтр поиска op_flag
+        #         new_posts.append([OP] + Post.query.filter(Post.OP_num == OP.OP_num, Post.id != OP.OP_num).order_by(Post.timestamp)[-3:])
+        #     new_posts.sort(key=sort_of_threads, reverse=True)
+        #     # разворачивание списка
+        #     listmerge = (lambda x: [el for lst in x for el in lst])(new_posts)
+
+        #     return render_template('board.html', posts=listmerge, form=form)
+        
+        # p = Post(body=form.post.data, OP_flag=1, board_name=board, guest_id=session.get('user'), last_bump=datetime.datetime.utcnow())
+        # db.session.add(p)
+        # db.session.commit()
+        # # надо записывать айди оп поста в сам оп пост
+        # p.OP_num = p.id
+        # db.session.commit()
+        
+        # # удаляем уплывшие треды
+        # list_of_threads = Post.query.filter(Post.board_name == board, Post.OP_num == Post.id).all()       
+        # ext_threads = list_of_threads[20:]
+        # if (len(ext_threads) > 0):
+        #     for item in ext_threads:
+        #         #all_posts = Post.query.filter_by(OP_num=item.OP_num).delete()  # .all()
+        #         db.session.query(Post).filter(Post.OP_num == item.OP_num).delete()
+        #         #db.session.delete_all(all_posts)
+        #         db.session.commit()
         
         return redirect(url_for('thread_big', board=board, thread_num=p.id))
     
@@ -343,5 +412,5 @@ def board_b(board, page=1):
 @app.route('/admin_panel/')
 @login_required
 def admin_panel():
-    return ''' Surprise, yopta! '''
+    return ''' Surprise, yeah! '''
 

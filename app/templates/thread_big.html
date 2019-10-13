@@ -1,6 +1,33 @@
 {% extends "base.html" %}
  
 {% block content %}
+        <script>
+        function ready() 
+        {
+            alert('DOM готов');
+            // let submit_but;
+            // submit_but = document.getElementById('submit_board');
+            // submit_but.addEventListener('onsubmit', submit_click)
+        }
+        document.addEventListener("DOMContentLoaded", ready);
+        function submit_click()
+        {
+
+            if (event.target.post.value != '')
+            {
+                event.target.submit();
+            }
+            if (event.target.image.value != '')
+            {
+                event.target.submit();
+            }
+
+            alert('Pic or text required.')
+            return false;
+        }
+
+
+    </script>
 
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -41,7 +68,7 @@
 </div>
 {% endif %}    
 <div style="display: flex; justify-content: center;">
-    <form name="submit_post" action="" enctype="multipart/form-data" method="post" novalidate>
+    <form name="submit_post" action="" enctype="multipart/form-data" method="post" onsubmit="return submit_click()" novalidate>
         {{ form.hidden_tag() }}
         <div style="padding: 5px  25px; border: white solid 3px; border-radius: 7px">
             {{ form.image.label }}<br>
