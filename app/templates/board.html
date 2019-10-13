@@ -2,13 +2,29 @@
 
 {% block content %}
     <script>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                alert( {{ message }} )
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+        function ready() 
+        {
+            alert('DOM готов');
+            let submit_but;
+            submit_but = document.getElementById('submit_board');
+            submit_but.addEventListener('onsubmit', submit_click)
+        }
+        document.addEventListener("DOMContentLoaded", ready);
+        function submit_click()
+        {
+            alert('hey');
+            alert(event.target.post.value);
+            alert(event.target.image.value);
+            //event.target.submit();
+            return false;
+        }
+    // {% with messages = get_flashed_messages() %}
+    //     {% if messages %}
+    //         {% for message in messages %}
+    //             alert( {{ message }} )
+    //         {% endfor %}
+    //     {% endif %}
+    // {% endwith %}
     </script>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -41,20 +57,24 @@
         <br>
         <br>
 
-        <form action="" enctype="multipart/form-data" method="post">
-            {{ form.hidden_tag() }}
-            <p>
-                {{ form.image.label }}<br>
-                {{ form.image(size=16) }}<br>
-            </p>
-            <p>
-                {{ form.post.label }}<br>
-                {{ form.post(cols=32, rows=4) }}<br>
-                {% for error in form.post.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-            <p>{{ form.submit() }}</p>
-        </form>
+        <div style="display: flex; justify-content: center;">
+            <form id="submit_board" action="" enctype="multipart/form-data" method="post" onsubmit="return submit_click()" novalidate>
+                {{ form.hidden_tag() }}
+                    <div style="padding: 5px  25px; border: white solid 3px; border-radius: 7px">
+                        {{ form.image.label }}<br>
+                        {{ form.image(size=16) }}<br>
+                    </div>
+                    <br>
+                    <div style="padding: 5px  25px; border: white solid 3px; border-radius: 7px">
+                        {{ form.post.label }}<br>
+                        {{ form.post(cols=48, rows=6) }}<br>
+                        <!--{% for error in form.post.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}-->
+                    {{ form.submit() }}
+                    </div>
+            </form>
+            
+        </div>
 
 {% endblock %}

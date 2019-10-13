@@ -43,12 +43,12 @@
 <div style="display: flex; justify-content: center;">
     <form name="submit_post" action="" enctype="multipart/form-data" method="post" novalidate>
         {{ form.hidden_tag() }}
-        <div>
+        <div style="padding: 5px  25px; border: white solid 3px; border-radius: 7px">
             {{ form.image.label }}<br>
             {{ form.image(size=16) }}<br>
         </div>
         <br>
-        <div>
+        <div style="padding: 5px  25px; border: white solid 3px; border-radius: 7px">
             {% if guest == posts[0].guest_id %}
                 {{ form.written_by_OP.label }}
                 {{ form.written_by_OP }}<br>
@@ -56,7 +56,7 @@
                 {{ form.sage }}<br>
             {% endif %}
             {{ form.post.label }}<br>
-            {{ form.post(cols=32, rows=4) }}<br>
+            {{ form.post(cols=48, rows=6) }}<br>
             {% for error in form.post.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
