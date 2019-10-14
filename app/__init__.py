@@ -8,20 +8,51 @@ from flask_login import LoginManager
 from config import Config
 # from flask_misaka import Misaka
 
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-#Misaka(app=app, escape    = True,
-#                no_images = True,
-#                wrap      = True,
-#                autolink  = True,
-#                no_intra_emphasis = True,
-#                space_headers     = True)
-
-login = LoginManager(app)
+db = SQLAlchemy()
+migrate = Migrate()
+login = LoginManager()
 login.login_view = 'index'
+
+#app = Flask(__name__)
+#app.config.from_object(Config)
+#db = SQLAlchemy(app)
+#migrate = Migrate(app, db)
+#login = LoginManager(app)
+#login.login_view = 'index'
+
+
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login.init_app(app)
+
+
+    if not app.debug and not app.testing:
+
+        if app.config['LOG_TO_STDOUT']:
+            stream_handler = logging.StreamHandler()
+            stream_handler.setLevel(logging.INFO)
+            app.logger.addHandler(stream_handler)
+        else:
+            if not os.path.exists('logs'):
+                os.mkdir('logs')
+            file_handler = RotatingFileHandler('logs/microblog.log',
+                                               maxBytes=10240, backupCount=10)
+            file_handler.setFormatter(logging.Formatter(
+                '%(asctime)s %(levelname)s: %(message)s '
+                '[in %(pathname)s:%(lineno)d]'))
+            file_handler.setLevel(logging.INFO)
+            app.logger.addHandler(file_handler)
+
+        app.logger.setLevel(logging.INFO)
+        app.logger.info('Microblog startup')
+
+    return app
+
+
 
 if not app.debug:
     # if app.config['MAIL_SERVER']:
