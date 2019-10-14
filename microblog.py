@@ -1,5 +1,9 @@
-from app import app, db
-from app.models import Board, Post
+from app import app, db, cli
+from app.models import Board, Post, User
+
+
+app = create_app()
+cli.register(app)
 
 
 @app.shell_context_processor
