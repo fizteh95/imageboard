@@ -72,13 +72,13 @@
             <hr>
         {% endfor %}
         <br>
-            <p>
-                <a href="{{ url_for('board_b', board=board, page=1) }}">1</a> 
-                <a href="{{ url_for('board_b', board=board, page=2) }}">2</a> 
-                <a href="{{ url_for('board_b', board=board, page=3) }}">3</a> 
-                <a href="{{ url_for('board_b', board=board, page=4) }}">4</a> 
+            <div style="display: flex; justify-content: center;">
+                <a href="{{ url_for('board_b', board=board, page=1) }}">1</a> &nbsp; &nbsp; &nbsp;
+                <a href="{{ url_for('board_b', board=board, page=2) }}">2</a> &nbsp; &nbsp; &nbsp;
+                <a href="{{ url_for('board_b', board=board, page=3) }}">3</a> &nbsp; &nbsp; &nbsp;
+                <a href="{{ url_for('board_b', board=board, page=4) }}">4</a> &nbsp; &nbsp; &nbsp;
                 <a href="{{ url_for('board_b', board=board, page=5) }}">5</a> 
-            </p>
+            </div>
         <br>
         <br>
 
