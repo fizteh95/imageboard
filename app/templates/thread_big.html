@@ -19,7 +19,10 @@
             }
             if (event.target.image.value != '')
             {
-                event.target.submit();
+                if (event.target.image.value.split('.')[event.target.image.value.length - 1] == 'jpg') or (event.target.image.value.split('.')[event.target.image.value.length - 1] == 'png')
+                {
+                    event.target.submit();
+                }
             }
 
             alert('Pic or text required.')
