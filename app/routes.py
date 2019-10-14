@@ -343,7 +343,7 @@ def board_b(board, page=1):
         print(p)
         # удаляем уплывшие треды
         list_of_threads = Post.query.filter(Post.board_name == board, Post.OP_num == Post.id).all()       
-        ext_threads = list_of_threads[20:]
+        ext_threads = list_of_threads[30:]
         if (len(ext_threads) > 0):
             for item in ext_threads:
                 #all_posts = Post.query.filter_by(OP_num=item.OP_num).delete()  # .all()
@@ -395,7 +395,7 @@ def board_b(board, page=1):
     prev_url = url_for('index', page=posts.prev_num) \
         if posts.has_prev else None
     '''
-    OP_posts = Post.query.filter(Post.board_name == board, Post.id == Post.OP_num, Post.is_deleted == 0).order_by(Post.last_bump.desc()).paginate(page, 2, False) # 2 - кол-во тредов на страницу
+    OP_posts = Post.query.filter(Post.board_name == board, Post.id == Post.OP_num, Post.is_deleted == 0).order_by(Post.last_bump.desc()).paginate(page, 6, False) # 2 - кол-во тредов на страницу
     new_posts = []
     for OP in OP_posts.items:
         # изменить фильтр поиска op_flag
