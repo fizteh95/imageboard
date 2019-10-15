@@ -413,3 +413,16 @@ def board_b(board, page=1):
 def admin_panel():
     return ''' Surprise, yeah! '''
 
+
+@bp.route('/add_board')
+@bp.route('/add_board/')
+@login_required
+def add_board():
+    form = BoardAddForm()
+    if form.validate_on_submit():
+        b = Board(ref=form.post.ref, description=form.post.description)
+        db.session.add(b)
+        db.session.commit()
+        return redirect(url_for('main.board', board=b.ref)
+    return render_template('add_board.html', form=form)
+
