@@ -9,7 +9,7 @@
     <br>
     {% for board in boards %}
     <div>
-        <b><a href="{{ url_for('board_b', board=board.ref) }}">/{{board.ref}}</a></b> - {{board.description}}
+        <b><a href="{{ url_for('main.board_b', board=board.ref) }}">/{{board.ref}}</a></b> - {{board.description}}
     </div>
     <br>
     {% endfor %}

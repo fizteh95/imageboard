@@ -183,15 +183,15 @@
 
 
     <head>
-        <h1 align="center"><a href="{{ url_for('index') }}" style="color: black;">Flask - imageboard</a></h1>
+        <h1 align="center"><a href="{{ url_for('main.index') }}" style="color: black;">Flask - imageboard</a></h1>
         <br>
         {% if current_user.is_authenticated %}
-	    <a href="{{ url_for('logout') }}">Logout</a>
+	    <a href="{{ url_for('main.logout') }}">Logout</a>
 	    <br>
 	    <br>
 	    {% endif %}
     </head>
-    <body bgcolor="#eeeeeee">
+    <body bgcolor="#eeeeee">
         {% block content %}{% endblock %}
         <br>
   </body>

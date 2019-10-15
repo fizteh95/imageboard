@@ -21,7 +21,7 @@
                 <input class="del_checkbox" type="checkbox" value={{post.id}} name='del_checkbox' onclick="checkFluency(event, this)">
                 {% endif %}
                 {% if (board_post == 1) and ((post.id == post.OP_num)) %}
-                    <a href="{{ url_for('thread_big', board=post.board_name, thread_num=post.id) }}"> reply</a>
+                    <a href="{{ url_for('main.thread_big', board=post.board_name, thread_num=post.id) }}"> reply</a>
                 {% endif %}
             </div>
             <div class="image_body_wrap" style="overflow: hidden;">
