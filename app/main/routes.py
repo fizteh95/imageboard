@@ -73,7 +73,7 @@ def admin():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
-            return redirect(url_for('admin'))
+            return redirect(url_for('main.admin'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
@@ -86,7 +86,7 @@ def admin():
 @bp.route('/logout/')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('main.index'))
 
 
 # @app.route('/register', methods=['GET', 'POST'])
@@ -206,7 +206,7 @@ def thread_big(thread_num, board):
                 p_to_del = Post.query.filter_by(id=num).first()
                 p_to_del.is_deleted = 1
             db.session.commit()
-        return redirect(url_for('thread_big', board=board, thread_num=thread_num))
+        return redirect(url_for('main.thread_big', board=board, thread_num=thread_num))
     
     
     if form.validate_on_submit() and (len(request.form.getlist('submit')) > 0):
@@ -256,7 +256,7 @@ def thread_big(thread_num, board):
                 post_to_reply._answers += [p.id]
                 db.session.commit()
 
-        return redirect(url_for('thread_big', board=board, thread_num=thread_num, _anchor=("post_num_" + str(p.id))))
+        return redirect(url_for('main.thread_big', board=board, thread_num=thread_num, _anchor=("post_num_" + str(p.id))))
     thread = Post.query.filter_by(
         OP_num=thread_num, is_deleted=0).order_by(Post.timestamp)  # , is_deleted=0
     return render_template('thread_big.html', posts=thread, board=board, form=form, guest=session.get('user'), form_del=form_del)
@@ -383,7 +383,7 @@ def board_b(board, page=1):
         #         #db.session.delete_all(all_posts)
         #         db.session.commit()
         
-        return redirect(url_for('thread_big', board=board, thread_num=p.id))
+        return redirect(url_for('main.thread_big', board=board, thread_num=p.id))
     
     # условие равенства айди и номера оп-поста
     # page = request.args.get('page', 1, type=int)
