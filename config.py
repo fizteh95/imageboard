@@ -19,4 +19,5 @@ class Config(object):
     # MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     # ADMINS = ['your-email@example.com']
     # POSTS_PER_PAGE = 25
+    MAX_CONTENT_LENGTH = 1 * 1024 * 1024
     PERMANENT_SESSION_LIFETIME = datetime.timedelta(days=365)
