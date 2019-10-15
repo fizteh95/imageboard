@@ -11,7 +11,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from flask import render_template, current_app
 from app import db
 from app.models import Board, Post, User
-from app.main.forms import PostForm, ThreadForm, LoginForm, PostDelForm
+from app.main.forms import PostForm, ThreadForm, LoginForm, PostDelForm, BoardAddForm
 import os
 from PIL import Image
 import re
@@ -240,10 +240,10 @@ def thread_big(thread_num, board):
         # TODO сделать проверки на тип и название и размер
         if file:
             filename = str(str(p.id) + '.' + file.filename.split('.')[-1])
-            file.save(os.path.join("C:\\2ch\\imageboard\\app\\static\\image_posts", filename))
+            file.save((r"\static\image_posts\" + str(filename)))  # os.path.join
             image = Image.open(file)
             image.thumbnail((120, 120), Image.ANTIALIAS)
-            image.save(os.path.join("C:\\2ch\\imageboard\\app\\static\\image_posts\\thumb", filename))  # , 'JPEG'
+            image.save(("/static/image_poststhumb/" + str(filename)))  # , 'JPEG'
 
             p.image_ref = filename
             db.session.commit()
@@ -414,15 +414,14 @@ def admin_panel():
     return ''' Surprise, yeah! '''
 
 
-@bp.route('/add_board')
-@bp.route('/add_board/')
+@bp.route('/add_board', methods=['GET', 'POST'])
+@bp.route('/add_board/', methods=['GET', 'POST'])
 @login_required
 def add_board():
     form = BoardAddForm()
     if form.validate_on_submit():
-        b = Board(ref=form.post.ref, description=form.post.description)
+        b = Board(ref=form.ref.data, description=form.description.data)
         db.session.add(b)
         db.session.commit()
-        return redirect(url_for('main.board', board=b.ref)
+        return redirect(url_for('main.board_b', board=b.ref))
     return render_template('add_board.html', form=form)
-

@@ -2,37 +2,36 @@
 
 {% block content %}
     <script>
+        function isNotMax(e)
+        {
+            e = e || window.event;
+            var target = e.target || e.srcElement;
+            var code=e.keyCode?e.keyCode:(e.which?e.which:e.charCode)
+            //alert('dfd')
+            switch (code){
+                case 13:
+                case 8:
+                case 9:
+                case 46:
+                case 37:
+                case 38:
+                case 39:
+                case 40:
+                return true;
+            }
+            console.log(target.value.length <= target.getAttribute('maxlength'));
+            return target.value.length <= target.getAttribute('maxlength');
+        }
+
+
         function ready() 
         {
             alert('DOM готов');
-            // let submit_but;
-            // submit_but = document.getElementById('submit_board');
-            // submit_but.addEventListener('onsubmit', submit_click)
+            let board_post = document.getElementById('post');
+            board_post.setAttribute(("maxlength"), 1000);
+            board_post.addEventListener('keydown', isNotMax);//, return isNotMax(event))
         }
         document.addEventListener("DOMContentLoaded", ready);
-    
-
-    
-        function isNotMax(e){
-    e = e || window.event;
-    var target = e.target || e.srcElement;
-    var code=e.keyCode?e.keyCode:(e.which?e.which:e.charCode)
-
-    switch (code){
-        case 13:
-        case 8:
-        case 9:
-        case 46:
-        case 37:
-        case 38:
-        case 39:
-        case 40:
-        return true;
-    }
-    return target.value.length <= target.getAttribute('maxlength');
-}
-
-
 
         function submit_click()
         {
