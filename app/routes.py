@@ -8,8 +8,8 @@ from flask_login import login_user, logout_user, current_user, login_required
 
 
 
-from flask import render_template
-from app import app, db
+from flask import render_template, current_app
+from app import db
 from app.models import Board, Post, User
 from app.forms import PostForm, ThreadForm, LoginForm, PostDelForm
 import os
