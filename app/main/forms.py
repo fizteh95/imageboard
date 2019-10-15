@@ -66,3 +66,9 @@ class ThreadForm(FlaskForm):
 class PostDelForm(FlaskForm):
     submit_del = SubmitField('Submit deleting', _name='delll')
     submit_hidden = HiddenField('Hidden list of posts')
+
+class BoardAddForm(FlaskForm):
+    ref = TextAreaField('/ref')
+    description = TextAreaField('Add description')
+    submit = SubmitField('Submit')
+
