@@ -18,7 +18,7 @@ import re
 import datetime
 from app.main import bp
 
-
+ 
 # @app.before_request
 # def before_request():
 #     if current_user.is_authenticated:
@@ -240,10 +240,14 @@ def thread_big(thread_num, board):
         # TODO сделать проверки на тип и название и размер
         if file:
             filename = str(str(p.id) + '.' + file.filename.split('.')[-1])
-            file.save((r"\static\image_posts\" + str(filename)))  # os.path.join
+            print(os.path.abspath(os.curdir))
+            print(os.path.join("static/image_posts/", str(filename)))
+            print(os.path.abspath(os.path.join(os.path.abspath(os.curdir), "app/static/image_posts/", str(filename))))
+            
+            file.save(os.path.abspath(os.path.join(os.path.abspath(os.curdir), "app/static/image_posts/", str(filename))))  # os.path.join
             image = Image.open(file)
             image.thumbnail((120, 120), Image.ANTIALIAS)
-            image.save(("/static/image_poststhumb/" + str(filename)))  # , 'JPEG'
+            image.save(os.path.abspath(os.path.join(os.path.abspath(os.curdir), "app/static/image_posts/thumb/", str(filename))))  # , 'JPEG'
 
             p.image_ref = filename
             db.session.commit()
