@@ -143,7 +143,7 @@ class Board(db.Model):
         return '<Board {}>'.format(self.ref)
 
 
-class Image(db.Model):
+class ImageClass(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True)
     picture = db.Column(db.LargeBinary)
