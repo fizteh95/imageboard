@@ -59,6 +59,18 @@ def create_app(config_class=Config):
         app.logger.info('Microblog startup')
 
 
+
+    from app.models import ImageClass
+    
+    try:
+        file = open('test.txt')  # наличие флаги будет флагом
+    except IOError as e:
+        print('Not first start, okay.')
+    else:
+        # загружаем из бд картинки в систему
+        pass
+
+
     _reply_re = re.compile(r'(>>\d+)')
 
 
