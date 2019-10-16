@@ -108,22 +108,19 @@ class Post(db.Model):
                 return []
         except:
             return []
+
     @_answers.setter
     def _answers(self, value):
         self.answers = json.dumps(value)
-    
+
     # reply = db.relationship(
     #     'Post', secondary=answers,
     #     primaryjoin=(answers.c.answ_from_id == id),
     #     secondaryjoin=(answers.c.answ_to_id == id),
     #     backref=db.backref('answers', lazy='dynamic'), lazy='dynamic')
-    
+
     def __repr__(self):
         return '<Post {}>'.format(self.body)
-
-
-
-
 
     # post.answ_from_id.all()
     # post1.answ_from_id.append(user2)
@@ -134,7 +131,8 @@ class Post(db.Model):
 #             followers, (followers.c.followed_id == Post.user_id)).filter(
 #                 followers.c.follower_id == self.id).order_by(
 #                     Post.timestamp.desc())
-    
+
+
 class Board(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ref = db.Column(db.String(100), unique=True)
@@ -143,6 +141,15 @@ class Board(db.Model):
 
     def __repr__(self):
         return '<Board {}>'.format(self.ref)
+
+
+class Image(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True)
+    picture = db.Column(db.LargeBinary)
+
+    def __repr__(self):
+        return '<Image {}>'.format(self.name)
 
 
 # class Answers(db.Model):
