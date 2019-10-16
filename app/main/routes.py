@@ -10,7 +10,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 
 from flask import render_template, current_app
 from app import db
-from app.models import Board, Post, User
+from app.models import Board, Post, User, ImageClass
 from app.main.forms import PostForm, ThreadForm, LoginForm, PostDelForm, BoardAddForm
 import os
 from PIL import Image
@@ -252,6 +252,13 @@ def thread_big(thread_num, board):
             p.image_ref = filename
             db.session.commit()
 
+
+            im = ImageClass(name=str(filename), picture=file.read())
+            db.session.add(im)
+            db.session.commit()
+
+
+
         reply = re.findall(r'>>\d+', p.body)
         for i in range(len(reply)):
             num = reply[i].split('>>')[-1]
@@ -336,6 +343,12 @@ def board_b(board, page=1):
 
             p.image_ref = filename
             db.session.commit()
+
+
+            im = ImageClass(name=str(filename), picture=file.read())
+            db.session.add(im)
+            db.session.commit()
+
 
         reply = re.findall(r'>>\d+', p.body)
         for i in range(len(reply)):
