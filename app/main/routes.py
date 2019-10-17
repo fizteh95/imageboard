@@ -16,6 +16,7 @@ from PIL import Image
 import re
 import datetime
 from app.main import bp
+import random
 
  
 # @app.before_request
@@ -200,7 +201,7 @@ def index():
     if 'user' in session:
         pass
     else:
-        session['user'] = os.urandom(24)
+        session['user'] = ''.join(random.choices(string.ascii_uppercase + string.digits, k=N))
         session.permanent = True
     return render_template('index.html', boards=boards)
 
@@ -213,7 +214,7 @@ def thread_big(thread_num, board):
     if 'user' in session:
         pass
     else:
-        session['user'] = os.urandom(24)
+        session['user'] = ''.join(random.choices(string.ascii_uppercase + string.digits, k=N))
         session.permanent = True
 
     form_del = PostDelForm()
@@ -296,16 +297,17 @@ def sort_of_threads(list_of_threads):
     else:
         return list_of_threads[-1].timestamp
 
+
 @bp.route('/<board>', methods=['GET', 'POST'])
 @bp.route('/<board>/', methods=['GET', 'POST'])
-@bp.route('/<board>/<int:page>', methods = ['GET', 'POST'])
-@bp.route('/<board>/<int:page>/', methods = ['GET', 'POST'])
+@bp.route('/<board>/<int:page>', methods=['GET', 'POST'])
+@bp.route('/<board>/<int:page>/', methods=['GET', 'POST'])
 def board_b(board, page=1):
 
     if 'user' in session:
         pass
     else:
-        session['user'] = os.urandom(24)
+        session['user'] = ''.join(random.choices(string.ascii_uppercase + string.digits, k=N))
         session.permanent = True
 
     form = ThreadForm()
