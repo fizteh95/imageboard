@@ -66,6 +66,30 @@ from app.main import bp
 @bp.route('/admin', methods=['GET', 'POST'])
 @bp.route('/admin/', methods=['GET', 'POST'])
 def admin():
+ 
+ 
+    users = User.query.all()
+    if len(users) == 0:
+        u = User(username='admin')
+        u.set_password('secret-password')
+        db.session.add(u)
+        db.session.commit()
+        
+    boards = Board
+    if len(boards) == 0:
+        b = Board(ref='b', description='Random talks')
+        db.session.add(b)
+        db.session.commit()
+    
+    try:
+        file = open('test.txt')  # наличие флаги будет флагом
+    except IOError as e:
+        # загружаем из бд картинки в систему
+        pass
+    else:
+        print('Not first start, okay.')
+ 
+ 
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = LoginForm()
