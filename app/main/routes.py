@@ -206,6 +206,7 @@ def index():
     return render_template('index.html', boards=boards)
 
 
+
 @bp.route('/<board>/res/<thread_num>', methods=['GET', 'POST'])
 @bp.route('/<board>/res/<thread_num>/', methods=['GET', 'POST'])
 def thread_big(thread_num, board):
@@ -275,13 +276,6 @@ def thread_big(thread_num, board):
 
             p.image_ref = filename
             db.session.commit()
-
-
-            im = ImageClass(name=str(filename), picture=file.read())
-            db.session.add(im)
-            db.session.commit()
-
-
 
         reply = re.findall(r'>>\d+', p.body)
         for i in range(len(reply)):
@@ -367,12 +361,6 @@ def board_b(board, page=1):
 
             p.image_ref = filename
             db.session.commit()
-
-
-            im = ImageClass(name=str(filename), picture=file.read())
-            db.session.add(im)
-            db.session.commit()
-
 
         reply = re.findall(r'>>\d+', p.body)
         for i in range(len(reply)):
