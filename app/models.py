@@ -14,7 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User(UserMixin, db.Model):  #
-    __tablename__ = "user"
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     # email = db.Column(db.String(120), index=True, unique=True)
@@ -85,7 +85,7 @@ def load_user(id):
 
 
 class Post(db.Model):
-    __tablename__ = "post"
+    __tablename__ = 'post'
     id = db.Column(db.Integer, primary_key=True)
     OP_num = db.Column(db.Integer, index=True)
     body = db.Column(db.String(140))
@@ -136,7 +136,7 @@ class Post(db.Model):
 
 
 class Board(db.Model):
-    __tablename__ = "board"
+    __tablename__ = 'board'
     id = db.Column(db.Integer, primary_key=True)
     ref = db.Column(db.String(100), unique=True)
     post_rel = db.relationship('Post', backref='board', lazy='dynamic')
@@ -147,7 +147,7 @@ class Board(db.Model):
 
 
 class ImageClass(db.Model):
-    __tablename__ = "image_class"
+    __tablename__ = 'image_class'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True)
     picture = db.Column(db.LargeBinary)
