@@ -193,7 +193,7 @@ def logout():
 #     return redirect(url_for('user', username=username))
 
 
-
+N = 12
 
 
 @bp.route('/')
