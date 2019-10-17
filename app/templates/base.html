@@ -25,7 +25,7 @@
             let temp = abz.src
             if ( abz.src.includes("thumb"))
             {
-                alert(temp)
+                //alert(temp)
                 abz.src = "/static/image_posts/" + temp.split("/")[temp.split("/").length - 1];}
             else {abz.src = "/static/image_posts/thumb/" + temp.split("/")[temp.split("/").length - 1];}
         }
@@ -107,10 +107,13 @@
             //потом добавим условие на расположение, слева или справа
             p_prime.style.left = event.pageX - getCoords(thread_div).left - 20
             p_prime.style.top = event.pageY - getCoords(thread_div).top - 20
-            p_prime.style.border = "1px solid black"
-            p_prime.style.background = "#cecece"
-            p_prime.style.borderRadius = "7px"
-            p_prime.style.border = '5px double red'
+            //p_prime.style.border = "1px solid black"
+            //p_prime.style.background = "#cecece"
+            //p_prime.style.borderRadius = "7px"
+            //p_prime.style.border = '5px double red'
+	    p_prime.style.border = '1px solid #d2d2d2'
+            p_prime.style.background =  '#dddddd'
+            p_prime.style.borderRadius =  '3px'
             p_prime.style.zIndex = "10"
         }
         function deleteDivvv(event) 
