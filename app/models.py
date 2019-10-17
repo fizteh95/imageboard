@@ -4,6 +4,7 @@ from app import db, login
 import json
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_image_alchemy.fields import StdImageField
 
 
 # followers = db.Table(
@@ -146,14 +147,25 @@ class Board(db.Model):
         return '<Board {}>'.format(self.ref)
 
 
-class ImageClass(db.Model):
-    __tablename__ = 'image_class'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), unique=True)
-    picture = db.Column(db.LargeBinary)
+# class ImageClass(db.Model):
+#     __tablename__ = 'image_class'
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(100), unique=True)
+#     picture = db.Column(db.LargeBinary)
 
-    def __repr__(self):
-        return '<Image {}>'.format(self.name)
+#     def __repr__(self):
+#         return '<Image {}>'.format(self.name)
+
+
+class Imagestore(db.Model):
+    __tablename__ = 'imagestore'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    image = db.Column(StdImageField(storage=s3_storage,
+                                    variations=
+                                    {
+                'thumbnail': {"width": 100, "height": 100, "crop": True}
+                                    }), nullable=True)
 
 
 # class Answers(db.Model):
