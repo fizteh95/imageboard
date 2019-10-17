@@ -60,15 +60,25 @@ def create_app(config_class=Config):
 
 
 
-    from app.models import ImageClass
+#     from app.models import ImageClass, User, Board
     
-    try:
-        file = open('test.txt')  # наличие флаги будет флагом
-    except IOError as e:
-        print('Not first start, okay.')
-    else:
-        # загружаем из бд картинки в систему
-        pass
+#     users = User.query.all()
+#     if len(users) == 0:
+#         u = User(username='admin')
+#         u.set_password('secret-password')
+#         db.session.add(u)
+#         db.session.commit()
+        
+#     boards = Board
+#     if len()
+    
+#     try:
+#         file = open('test.txt')  # наличие флаги будет флагом
+#     except IOError as e:
+#         # загружаем из бд картинки в систему
+#         pass
+#     else:
+#         print('Not first start, okay.')
 
 
     _reply_re = re.compile(r'(>>\d+)')
