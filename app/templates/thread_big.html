@@ -104,9 +104,9 @@
             {% if guest == posts[0].guest_id %}
                 {{ form.written_by_OP.label }}
                 {{ form.written_by_OP }}<br>
-                {{ form.sage.label }}
-                {{ form.sage }}<br>
             {% endif %}
+            {{ form.sage.label }}
+            {{ form.sage }}<br>
             {{ form.post.label }}<br>
             {{ form.post(cols=48, rows=6) }}<br>
             {% for error in form.post.errors %}
