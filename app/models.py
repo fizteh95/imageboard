@@ -1,10 +1,10 @@
 from datetime import datetime
 # from hashlib import md5
-from app import db, login
+from app import db, login# , s3_storage
 import json
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_image_alchemy.fields import StdImageField
+#from flask_image_alchemy.fields import StdImageField
 
 
 # followers = db.Table(
@@ -93,6 +93,7 @@ class Post(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     OP_flag = db.Column(db.Integer)
     image_ref = db.Column(db.String(120))
+    thumb_ref = db.Column(db.String(120))
     board_name = db.Column(db.String(10), db.ForeignKey('board.ref'))
     answers = db.Column(db.String(100))
     guest_id = db.Column(db.String(120))
@@ -157,15 +158,15 @@ class Board(db.Model):
 #         return '<Image {}>'.format(self.name)
 
 
-class Imagestore(db.Model):
-    __tablename__ = 'imagestore'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    image = db.Column(StdImageField(storage=s3_storage,
-                                    variations=
-                                    {
-                'thumbnail': {"width": 100, "height": 100, "crop": True}
-                                    }), nullable=True)
+# class Imagestore(db.Model):
+#     __tablename__ = 'imagestore'
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(100))
+#     image = db.Column(StdImageField(storage=s3_storage,
+#                                     variations=
+#                                     {
+#                 'thumbnail': {"width": 100, "height": 100, "crop": True}
+#                                     }), nullable=True)
 
 
 # class Answers(db.Model):
