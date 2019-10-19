@@ -28,7 +28,7 @@
                 <div style="margin-bottom:17px;margin-left:17px;margin-right:17px;margin-top:17px;">
                     {% if post.image_ref %}
                         <div style="float:left; margin-bottom: 10px; margin-right: 10px;">
-                            <img src="/static/image_posts/thumb/{{post.image_ref}}" onclick="ChangeURLPicture(event, this)">
+                            <img src="{{post.thumb_ref}}" data-src="{{post.image_ref}}" onclick="ChangeURLPicture(event, this)">
                         </div>
                     {% endif %}
                     <div style="overflow:auto;">
