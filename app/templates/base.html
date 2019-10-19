@@ -23,11 +23,13 @@
         {
             abz = element;
             let temp = abz.src
-            if ( abz.src.includes("thumb"))
-            {
+            abz.src = abz.getAttribute('data-src')
+            abz.setAttribute('data-src', 'temp')
+            //if ( abz.src.includes("thumb"))
+            //{
                 //alert(temp)
-                abz.src = "/static/image_posts/" + temp.split("/")[temp.split("/").length - 1];}
-            else {abz.src = "/static/image_posts/thumb/" + temp.split("/")[temp.split("/").length - 1];}
+            //    abz.src = "/static/image_posts/" + temp.split("/")[temp.split("/").length - 1];}
+            //else {abz.src = "/static/image_posts/thumb/" + temp.split("/")[temp.split("/").length - 1];}
         }
         function getCoords(elem) { // кроме IE8-
           var box = elem.getBoundingClientRect();
