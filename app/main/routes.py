@@ -383,16 +383,39 @@ def board_b(board, page=1):
         # TODO сделать проверки на тип и название и размер
         if file:
             filename = str(str(p.id) + '.' + file.filename.split('.')[-1])
-            print(os.path.abspath(os.curdir))
-            print(os.path.join("static/image_posts/", str(filename)))
-            print(os.path.abspath(os.path.join(os.path.abspath(os.curdir), "app/static/image_posts/", str(filename))))
             
             file.save(os.path.abspath(os.path.join(os.path.abspath(os.curdir), "app/static/image_posts/", str(filename))))  # os.path.join
             image = Image.open(file)
-            image.thumbnail((120, 120), Image.ANTIALIAS)
-            image.save(os.path.abspath(os.path.join(os.path.abspath(os.curdir), "app/static/image_posts/thumb/", str(filename))))  # , 'JPEG'
+            image_th = Image.open(file)
+            image_th.thumbnail((120, 120), Image.ANTIALIAS)
+            image_th.save(os.path.abspath(os.path.join(os.path.abspath(os.curdir), "app/static/image_posts/thumb/", str(filename))))  # , 'JPEG'
 
-            p.image_ref = filename
+            ###
+            # print(file.read())
+            # with open(file.read()) as image_file:
+            buffered = BytesIO()
+            image.save(buffered, format="JPEG")
+
+            encoded_string = base64.b64encode(buffered.getvalue())
+            response = requests.post(
+                    'https://api.imgbb.com/1/upload?key=b6acbdd3baa7d6286c87772e95dc33b8',
+                    data={'image': encoded_string}, verify=False)
+
+            #print(response.json())
+
+            buffered2 = BytesIO()
+            image_th.save(buffered2, format="JPEG")
+
+            encoded_string_thumb = base64.b64encode(buffered2.getvalue())
+            response_thumb = requests.post(
+                    'https://api.imgbb.com/1/upload?key=b6acbdd3baa7d6286c87772e95dc33b8',
+                    data={'image': encoded_string_thumb}, verify=False)
+            ###
+            #print(response.json())
+            #print(response_thumb.json())
+            p.image_ref = response.json()['data']['url']
+            p.thumb_ref = response_thumb.json()['data']['url']
+            
             db.session.commit()
 
         reply = re.findall(r'>>\d+', p.body)
