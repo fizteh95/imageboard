@@ -1,8 +1,7 @@
 /__pycache__
 /app/__pycache__
 /logs
-/migrations
 /venv
 /app.db
-/app/static
-/app/static/
+/app/static/image_posts
+/app/static/image_posts/

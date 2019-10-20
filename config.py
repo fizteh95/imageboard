@@ -11,6 +11,14 @@ class Config(object):
         'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
+
+
+    # AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID') or 'tratata'
+    # AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY') or 'tratata'
+    # AWS_REGION_NAME = os.environ.get('AWS_REGION_NAME', 'eu-central-1') or 'tratata'
+    # S3_BUCKET_NAME = os.environ.get('AWS_REGION_NAME', 'haraka-local') or 'tratata'
+
+
     # MAIL_SERVER = os.environ.get('MAIL_SERVER')
     # MAIL_PORT = int(os.environ.get('MAIL_PORT') or 25)
     # MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
