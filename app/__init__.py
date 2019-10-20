@@ -12,6 +12,8 @@ from config import Config
 
 import re
 from jinja2 import Markup
+  
+
 
 db = SQLAlchemy()
 migrate = Migrate()
