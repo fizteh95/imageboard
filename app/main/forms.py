@@ -50,8 +50,8 @@ class LoginForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    post = TextAreaField('Say something')#, validators=[DataRequired()])
-    image = FileField('Put your image here')
+    post = TextAreaField('Say something (< 1000 chars)')#, validators=[DataRequired()])
+    image = FileField('Put your image here (< 1 MB, jpg, png, gif)')
     written_by_OP = BooleanField("OP's mark")
     sage = BooleanField('SAGE')
     # recaptcha = RecaptchaField()
@@ -59,8 +59,8 @@ class PostForm(FlaskForm):
 
 
 class ThreadForm(FlaskForm):
-    post = TextAreaField('Say something')
-    image = FileField('Put your image here')
+    post = TextAreaField('Say something (< 1000 chars)')
+    image = FileField('Put your image here (< 1 MB, jpg, png, gif)')
     submit = SubmitField('Submit', _name='posttt')
 
 class PostDelForm(FlaskForm):
@@ -68,7 +68,7 @@ class PostDelForm(FlaskForm):
     submit_hidden = HiddenField('Hidden list of posts')
 
 class BoardAddForm(FlaskForm):
-    ref = TextAreaField('/ref')
+    ref = TextAreaField('ref')
     description = TextAreaField('Add description')
     submit = SubmitField('Submit')
 
