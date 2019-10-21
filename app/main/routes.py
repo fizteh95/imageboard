@@ -85,13 +85,13 @@ def admin():
         db.session.add(b)
         db.session.commit()
     
-    try:
-        file = open('test.txt')  # наличие флаги будет флагом
-    except IOError as e:
+    # try:
+    #     file = open('test.txt')  # наличие флаги будет флагом
+    # except IOError as e:
         # загружаем из бд картинки в систему
-        pass
-    else:
-        print('Not first start, okay.')
+    #     pass
+    # else:
+    #     print('Not first start, okay.')
  
  
     if current_user.is_authenticated:
@@ -268,7 +268,7 @@ def thread_big(thread_num, board):
         #     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         # TODO сделать проверки на тип и название и размер
         if file:
-            filename = str(str(p.id) + '.' + file.filename.split('.')[-1])
+            filename = str(str(p.id) + '.' + file.filename.split('.')[-1]).lower()
             
             file.save(os.path.abspath(os.path.join(os.path.abspath(os.curdir), "app/static/image_posts/", str(filename))))  # os.path.join
             image = Image.open(file)
@@ -276,11 +276,17 @@ def thread_big(thread_num, board):
             image_th.thumbnail((120, 120), Image.ANTIALIAS)
             image_th.save(os.path.abspath(os.path.join(os.path.abspath(os.curdir), "app/static/image_posts/thumb/", str(filename))))  # , 'JPEG'
 
-            ###
-            # print(file.read())
-            # with open(file.read()) as image_file:
+            if filename.split('.')[-1] == 'jpg':
+                format = "JPEG"
+            if filename.split('.')[-1] == 'jpeg':
+                format = "JPEG"
+            if filename.split('.')[-1] == 'png':
+                format = "PNG"
+            if filename.split('.')[-1] == 'gif':
+                format = "GIF"
+
             buffered = BytesIO()
-            image.save(buffered, format="JPEG")
+            image.save(buffered, format=format)
 
             encoded_string = base64.b64encode(buffered.getvalue())
             response = requests.post(
@@ -290,7 +296,7 @@ def thread_big(thread_num, board):
             #print(response.json())
 
             buffered2 = BytesIO()
-            image_th.save(buffered2, format="JPEG")
+            image_th.save(buffered2, format=format)
 
             encoded_string_thumb = base64.b64encode(buffered2.getvalue())
             response_thumb = requests.post(
@@ -382,7 +388,7 @@ def board_b(board, page=1):
         #     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         # TODO сделать проверки на тип и название и размер
         if file:
-            filename = str(str(p.id) + '.' + file.filename.split('.')[-1])
+            filename = str(str(p.id) + '.' + file.filename.split('.')[-1]).lower()
             
             file.save(os.path.abspath(os.path.join(os.path.abspath(os.curdir), "app/static/image_posts/", str(filename))))  # os.path.join
             image = Image.open(file)
@@ -390,11 +396,20 @@ def board_b(board, page=1):
             image_th.thumbnail((120, 120), Image.ANTIALIAS)
             image_th.save(os.path.abspath(os.path.join(os.path.abspath(os.curdir), "app/static/image_posts/thumb/", str(filename))))  # , 'JPEG'
 
+            if filename.split('.')[-1] == 'jpg':
+                format = "JPEG"
+            if filename.split('.')[-1] == 'jpeg':
+                format = "JPEG"
+            if filename.split('.')[-1] == 'png':
+                format = "PNG"
+            if filename.split('.')[-1] == 'gif':
+                format = "GIF"
+
             ###
             # print(file.read())
             # with open(file.read()) as image_file:
             buffered = BytesIO()
-            image.save(buffered, format="JPEG")
+            image.save(buffered, format=format)
 
             encoded_string = base64.b64encode(buffered.getvalue())
             response = requests.post(
@@ -404,7 +419,7 @@ def board_b(board, page=1):
             #print(response.json())
 
             buffered2 = BytesIO()
-            image_th.save(buffered2, format="JPEG")
+            image_th.save(buffered2, format=format)
 
             encoded_string_thumb = base64.b64encode(buffered2.getvalue())
             response_thumb = requests.post(
