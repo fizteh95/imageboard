@@ -89,13 +89,13 @@ class Post(db.Model):
     __tablename__ = 'post'
     id = db.Column(db.Integer, primary_key=True)
     OP_num = db.Column(db.Integer, index=True)
-    body = db.Column(db.String(140))
+    body = db.Column(db.String(3000))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     OP_flag = db.Column(db.Integer)
     image_ref = db.Column(db.String(120))
     thumb_ref = db.Column(db.String(120))
     board_name = db.Column(db.String(10), db.ForeignKey('board.ref'))
-    answers = db.Column(db.String(100))
+    answers = db.Column(db.String(1000))
     guest_id = db.Column(db.String(120))
     is_sage = db.Column(db.Integer)
     last_bump = db.Column(db.DateTime, index=True)
@@ -142,7 +142,7 @@ class Board(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ref = db.Column(db.String(100), unique=True)
     post_rel = db.relationship('Post', backref='board', lazy='dynamic')
-    description = db.Column(db.String(100))
+    description = db.Column(db.String(300))
 
     def __repr__(self):
         return '<Board {}>'.format(self.ref)
